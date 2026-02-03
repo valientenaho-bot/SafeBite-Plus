@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan Nutricional Safebite Plus</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .btn-juicy {
+            background: linear-gradient(135deg, #166534, #15803d);
+            box-shadow: 0 4px 15px rgba(22, 101, 52, 0.3);
+        }
+        
+        .btn-juicy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(22, 101, 52, 0.4);
+        }
+        
+        .recipe-box {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .ingredient-box, .preparation-box {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .active-btn {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24) !important;
+            color: white !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4) !important;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+
+        /* Circular Progress */
+        .circular-progress-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 8px 20px rgba(34, 197, 94, 0.2));
+        }
+
+        .progress-circle-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 14;
+            stroke-linecap: round;
+        }
+
+        .progress-circle-fill {
+            fill: none;
+            stroke: url(#bananaGradient);
+            stroke-width: 14;
+            stroke-linecap: round;
+            stroke-dasharray: 753.98;
+            stroke-dashoffset: 753.98;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .progress-emoji {
+            font-size: 80px;
+            line-height: 1;
+            display: block;
+            animation: swingBanana 3s ease-in-out infinite;
+        }
+
+        @keyframes swingBanana {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.1); }
+        }
+
+        .progress-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #f59e0b;
+            text-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+            margin-top: -8px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #16a34a;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meal-checkbox {
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            accent-color: #22c55e;
+            transition: transform 0.2s ease;
+        }
+
+        .meal-checkbox:checked {
+            transform: scale(1.15);
+        }
+
+        .meal-type-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .meal-card {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .meal-card.completed {
+            filter: brightness(1.05);
+            border-color: #22c55e !important;
+            border-width: 2px !important;
+        }
+
+        .meal-card.completed::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 16px rgba(34, 197, 94, 0.5);
+            z-index: 10;
+        }
+
+        .meal-card.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 11;
+        }
+
+        /* Modal Styles */
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-content {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="bg-gradient-to-br from-green-50 via-lime-50 to-yellow-50">
+  <div class="min-h-screen p-4 md:p-8">
+   <div class="max-w-6xl mx-auto"><div class="text-center mb-8">
+     <h1 class="text-4xl md:text-5xl font-black mb-3 bg-gradient-to-r from-green-600 via-lime-500 to-yellow-500 bg-clip-text text-transparent">Safebite Plus 🌿</h1>
+     <p class="text-lg md:text-xl font-bold text-green-700">🌱 Dieta 100% Libre de Mariscos • 7 Días de Sabor y Salud 🍊</p>
+    </div><section class="mb-12 bg-white rounded-3xl p-8 shadow-xl border-4 border-green-100">
+     <h2 class="text-2xl font-black text-green-800 mb-6 flex items-center gap-3"><span class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white w-12 h-12 rounded-full flex items-center justify-center">1</span> Selecciona Tu Plan</h2>
+     <div id="imc-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+    </section><section id="day-area" class="mb-12 bg-white rounded-3xl p-8 shadow-xl border-4 border-green-100 hidden">
+     <h2 class="text-2xl font-black text-green-800 mb-6 flex items-center gap-3"><span class="bg-gradient-to-r from-yellow-400 to-orange-400 text-white w-12 h-12 rounded-full flex items-center justify-center">2</span> Elige Tu Día 📅</h2>
+     <div id="day-grid" class="grid grid-cols-4 md:grid-cols-7 gap-3"></div>
+    </section><section id="menu-area" class="mb-12 bg-white rounded-3xl p-8 shadow-xl border-4 border-dashed border-yellow-200 hidden">
+     <div class="text-center mb-8">
+      <h2 id="day-title" class="text-4xl font-black text-green-800 inline-block bg-gradient-to-r from-yellow-200 to-green-200 px-8 py-3 rounded-full mb-8"></h2><div class="circular-progress-wrapper">
+       <svg class="progress-svg" viewbox="0 0 280 280"><defs>
+         <lineargradient id="bananaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+         </lineargradient>
+        </defs> <circle cx="140" cy="140" r="120" class="progress-circle-bg"></circle> <circle id="progress-fill" cx="140" cy="140" r="120" class="progress-circle-fill"></circle>
+       </svg><div class="progress-text"><span class="progress-emoji">🍌</span>
+        <div class="progress-number" id="progress-percent">
+         0%
+        </div>
+        <div class="progress-label">
+         Completado
+        </div>
+       </div>
+      </div>
+     </div><div id="menu-content" class="space-y-6 mt-12"></div>
+    </section><div class="text-center py-8">
+     <div class="text-4xl mb-4 space-x-3"><span class="inline-block animate-bounce" style="animation-delay: 0s">🥬</span> <span class="inline-block animate-bounce" style="animation-delay: 0.2s">🍎</span> <span class="inline-block animate-bounce" style="animation-delay: 0.4s">🥕</span> <span class="inline-block animate-bounce" style="animation-delay: 0.6s">🍊</span> <span class="inline-block animate-bounce" style="animation-delay: 0.8s">🫛</span>
+     </div>
+     <p class="text-lg font-bold text-green-700">¡Come sano, vive feliz! 🌈</p>
+    </div>
+   </div>
+  </div>
+
+  <div id="congrats-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 transition-opacity duration-300">
+    <div class="modal-content bg-white rounded-3xl max-w-3xl w-full p-8 md:p-10 shadow-2xl border-4 border-green-400 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-green-400 via-yellow-400 to-orange-400"></div>
+        
+        <div class="text-center">
+            <div class="text-6xl md:text-7xl mb-6 animate-bounce">🎉🏆🎉</div>
+            <h2 class="text-3xl md:text-4xl font-black text-green-800 mb-6 uppercase tracking-tight">¡Felicidades por completar el plan!</h2>
+            
+            <div class="space-y-5 text-gray-700 text-lg leading-relaxed mb-8 text-justify md:text-center">
+                <p>Queremos agradecerte de corazón por confiar en nosotros y permitirnos acompañarte en un proceso tan personal e importante. Sabemos que cada paso que diste requirió constancia, compromiso y decisión, y nos alegra profundamente haber sido parte de ese camino.</p>
+                <p>Para todo el equipo de <span class="font-bold text-green-600 text-xl">Safebite Plus</span> ha sido un verdadero placer caminar contigo, compartiendo este proceso con entusiasmo, dedicación y mucho cuidado. Tu confianza y tu experiencia no solo nos inspiran, sino que también nos impulsan a seguir creciendo como comunidad.</p>
+                <p class="font-medium text-green-900 bg-green-50 p-4 rounded-xl border border-green-100">Gracias a personas como tú, seguimos aprendiendo, mejorando e innovando cada día, con el firme compromiso de ofrecer productos de la más alta calidad y un acompañamiento cada vez más cercano y humano. Recuerda que aquí siempre tendrás un equipo que cree en ti y en tu bienestar.</p>
+            </div>
+
+            <button onclick="closeModal()" class="btn-juicy text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg hover:scale-105 transition-transform hover:shadow-2xl">
+                ¡Gracias a ustedes! 💚
+            </button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+        let selectedIMC = null;
+        let selectedDayIndex = null;
+        const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+        const dayFruits = ['🍎', '🍊', '🍋', '🫐', '🍌', '🌶️', '🥝'];
+        const fruitEmojis = ['🍎', '🍊', '🍋', '🍌', '🍇', '🍓', '🫐', '🥝', '🍑', '🍒', '🥭', '🍍'];
+
+        // Meals tracking per day
+        let mealCompletion = {};
+
+        const menus = {
+            sobrepeso: [
+                { day: 'Lunes', tip: '💧 Tip: Bebe 2 litros de agua diaria. ¡Hidrátate para adelgazar!', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Tostada sin gluten con aguacate y claras revueltas', desc: 'Desayuno ligero y saciante que aporta grasas saludables', cal: '280 kcal', ingredients: 'Pan sin gluten (1 rebanada), claras de huevo (2), aguacate (1/4), sal.',preparation: 'Tostar el pan, cocinar las claras sin aceite, machacar el aguacate y servir.'},
+                    { type: 'Snack AM', time: '🍌', name: 'Yogur de coco natural', desc: 'Alternativa sin gluten ni lactosa', cal: '120 kcal',ingredients: 'Pan sin gluten (1 rebanada), claras de huevo (2), aguacate (1/4), sal.',preparation: 'Tostar el pan, cocinar las claras sin aceite, machacar el aguacate y servir.'},
+                    { type: 'Almuerzo', time: '☀️', name: 'Salmón con quinoa y espárragos', desc: 'Plato balanceado que aporta omega-3 y fibra.', cal: '420 kcal', ingredients: 'Pan sin gluten (1 rebanada), claras de huevo (2), aguacate (1/4), sal.',preparation: 'Tostar el pan, cocinar las claras sin aceite, machacar el aguacate y servir.'},
+                    { type: 'Snack PM', time: '🍎', name: 'Manzana verde', desc: 'Fruta fresca rica en fibra', cal: '80 kcal', ingredients: 'Pan sin gluten (1 rebanada), claras de huevo (2), aguacate (1/4), sal.',preparation: 'Tostar el pan, cocinar las claras sin aceite, machacar el aguacate y servir.'},
+                    { type: 'Cena', time: '🌙', name: 'Crema ligera de calabaza', desc: 'Cena suave, baja en calorías y reconfortante.', cal: '150 kcal', ingredients: 'Pan sin gluten (1 rebanada), claras de huevo (2), aguacate (1/4), sal.',preparation: 'Tostar el pan, cocinar las claras sin aceite, machacar el aguacate y servir.'}
+                ]},
+                { day: 'Martes', tip: '🥢 Tip: Mastica lentamente por 20 minutos.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Batido proteico de fresa y chía', desc: 'Batido refrescante y nutritivo que aporta proteína y fibra', cal: '220 kcal', recipe: '🍌 1 banana\n🥚 2 huevos\n\n🥞 Esponjosas!' },
+                    { type: 'Snack AM', time: '🍊', name: 'Manzana verde', desc: 'Fruta fresca rica en fibra', cal: '80 kcal', recipe: '🍊 1 naranja\n🥜 15 nueces\n\n🌟 Vitamina C!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Seco de pollo ligero', desc: 'Plato tradicional adaptado', cal: '400 kcal', recipe: '🫘 1/2 taza garbanzos\n🥣 hummus\n\n🥙 Mediterráneo!' },
+                    { type: 'Snack PM', time: '🥝', name: 'Papaya picada', desc: 'Fruta digestiva y refrescante', cal: '110 kcal', recipe: '🥝 2 kiwis\n🥥 coco rallado\n\n💚 Tropical!' },
+                    { type: 'Cena', time: '🌙', name: 'Tortilla de champiñones y espárragos', desc: 'Cena rica en proteínas y vegetales, baja en carbohidratos', cal: '350 kcal', recipe: '🦃 150g pavo\n🥦 brócoli\n\n🍳 Ligero!' }
+                ]},
+                { day: 'Miércoles', tip: '🚶 Tip: Camina 30 min después de comer.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Tortilla de maíz con pollo', desc: 'Desayuno práctico y balanceado', cal: '350 kcal', recipe: '🫐 1 paquete açaí\n🍌 1 banana\n\n💜 Energía!' },
+                    { type: 'Snack AM', time: '🍇', name: 'Yogur de coco natural', desc: 'Alternativa sin gluten ni lactosa', cal: '120 kcal', recipe: '🍇 1 taza uvas\n🧀 cottage\n\n🎯 Proteína!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Ternera salteada con brócoli', desc: 'Plato alto en hierro y proteína', cal: '400 kcal', recipe: '🥩 150g carne\n🥬 lechuga\n\n🌮 Frescos!' },
+                    { type: 'Snack PM', time: '🍑', name: 'Durazno+Yogur', desc: 'Durazno fresco', cal: '120 kcal', recipe: '🍑 1 durazno\n🥛 yogur\n\n🌸 Cremoso!' },
+                    { type: 'Cena', time: '🌙', name: 'Ensalada de garbanzos con atún', desc: 'Cena nutritiva con proteína vegetal y animal', cal: '320 kcal', recipe: '🐟 150g merluza\n🌿 verduras\n\n📦 Saludable!' }
+                ]},
+                { day: 'Jueves', tip: '💪 Tip: Proteína en cada comida.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Overnight oats sin gluten', desc: 'Desayuno frío y práctico, rico en fibra y antioxidantes', cal: '360 kcal', recipe: '🍠 2 rodajas camote\n🥑 aguacate\n\n🔥 Innovador!' },
+                    { type: 'Snack AM', time: '🍓', name: 'Fresas', desc: 'Fresas frescas', cal: '130 kcal', recipe: '🍓 8 fresas\n🍫 chocolate 85%\n\n❤️ Lujo!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Lentejas estofadas ligeras', desc: 'Plato vegetal completo que aporta proteína, hierro y energía sostenida', cal: '430 kcal', recipe: '🍗 120g pollo\n🥬 repollo\n\n🌯 Sabores!' },
+                    { type: 'Snack PM', time: '🥭', name: ' Naranja entera', desc: 'Fruta rica en vitamina C y fibra, mejor que el jugo para la saciedad', cal: '100 kcal', recipe: '🥭 1 mango\n🌶️ chile\n\n🔥 Explosión!' },
+                    { type: 'Cena', time: '🌙', name: 'Merluza con calabacín', desc: 'Cena liviana, rica en proteína y muy baja en grasa', cal: '280 kcal', recipe: '🎃 calabaza\n🥥 leche coco\n\n🍲 Reconfortante!' }
+                ]},
+                { day: 'Viernes', tip: '😴 Tip: Duerme 7-8 horas.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Panqueque de claras y banano', desc: 'Desayuno dulce y saludable, alto en proteína y bajo en grasa', cal: '330 kcal', recipe: '🫘 3 cdas chía\n🥥 coco\n\n⏰ Refrescante!' },
+                    { type: 'Snack AM', time: '🫐', name: 'Arándanos', desc: 'Antioxidante', cal: '145 kcal', recipe: '🫐 1/2 taza\n🥜 almendras\n\n💜 Potente!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Pasta sin gluten con tomate natural', desc: 'Plato reconfortante adaptado, con carbohidratos controlados y salsa ligera', cal: '420 kcal', recipe: '🐟 atún\n🥚 huevo\n\n🇫🇷 Clásica!' },
+                    { type: 'Snack PM', time: '🍒', name: 'Judías verdes de soya al vapor', desc: 'Snack vegetal rico en proteína y fibra que ayuda a evitar antojos', cal: '90 kcal', recipe: '🍒 1 taza\n\n❤️ Dulces!' },
+                    { type: 'Cena', time: '🌙', name: 'Fajitas de pollo en lechuga', desc: 'Cena baja en carbohidratos que mantiene el sabor sin usar tortillas tradicionales.', cal: '370 kcal', recipe: '🍗 pollo\n🍛 curry\n\n🍛 Aromático!' }
+                ]},
+                { day: 'Sábado', tip: '🍽️ Tip: Usa platos pequeños.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Revuelto de huevo y espinaca', desc: 'Desayuno clásico, nutritivo y saciante que aporta vitaminas y proteína.', cal: '520 kcal', recipe: '🥚 3 huevos\n🍅 tomate\n\n🍳 Sabroso!' },
+                    { type: 'Snack AM', time: '🧇', name: 'Durazno+Yogur', desc: 'Pancakes mini', cal: '380 kcal', recipe: '🥞 pancakes\n🍁 sirope\n\n🥞 Indulgencia!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Arroz caldoso con mariscos', desc: 'Plato completo que combina proteína magra y carbohidratos en porción controlada.', cal: '680 kcal', recipe: '🐟 pescado\n🌽 tortillas\n\n🌮 Festival!' },
+                    { type: 'Snack PM', time: '🍇', name: 'Naranja entera', desc: 'Fruta rica en vitamina C y fibra, mejor que el jugo para la saciedad', cal: '420 kcal', recipe: '🧀 quesos\n🍇 uvas\n\n🍷 Elegante!' },
+                    { type: 'Cena', time: '🌙', name: 'Hamburguesa de res al plato', desc: 'Cena proteica sin pan, ideal para mantener masa muscular sin exceso calórico', cal: '580 kcal', recipe: '🍗 pechuga\n🥬 espinaca\n\n👨‍🍳 Gourmet!' }
+                ]},
+                { day: 'Domingo', tip: '📋 Tip: Meal prep el domingo.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Bowl de frutas con semillas', desc: 'Desayuno fresco, hidratante y rico en micronutrientes', cal: '620 kcal', recipe: '🥚 huevos\n🥓 bacon\n\n🍳 Domingo!' },
+                    { type: 'Snack AM', time: '🍌', name: 'Naranja entera', desc: 'Fruta rica en vitamina C y fibra, mejor que el jugo para la saciedad', cal: '420 kcal', recipe: '🍌 banana\n🥭 mango\n\n🌴 Tropical!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Lomo de cerdo con patata y ensalada', desc: 'Plato balanceado que aporta proteína, energía y fibra', cal: '750 kcal', recipe: '🥩 res\n🍗 pollo\n\n🔥 Fiesta!' },
+                    { type: 'Snack PM', time: '🍫', name: 'Chocolate negro', desc: 'Pequeño gusto saludable que ayuda a controlar la ansiedad por lo dulce.', cal: '380 kcal', recipe: '🍫 chocolate\n🍓 frutas\n\n🫕 Diversión!' },
+                    { type: 'Cena', time: '🌙', name: 'Sopa de pollo con fideos de arroz', desc: 'Cena reconfortante y ligera, ideal para cerrar la semana sin sobrecargar el cuerpo', cal: '650 kcal', recipe: '🍕 pizza\n🧀 queso\n\n🍕 Noche!' }
+                ]}
+            ],
+            bajo: [
+                { day: 'Lunes', tip: '🍽️ Tip: Come 5-6 comidas diarias.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Super Bowl Avena', desc: 'Avena cremosa', cal: '520 kcal', recipe: '🥣 1 taza avena\n🍌 banana\n\n🍳 Energético!' },
+                    { type: 'Snack AM', time: '🍌', name: 'Batido Ganador', desc: 'Proteico nutritivo', cal: '380 kcal', recipe: '🍌 2 bananas\n🥜 mantequilla maní\n\n💪 Poder!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Pasta+Pollo', desc: 'Fusilli cremosa', cal: '650 kcal', recipe: '🍝 pasta arroz\n🍗 pollo\n\n🍝 Abundante!' },
+                    { type: 'Snack PM', time: '🥑', name: 'Tostada Aguacate', desc: 'Power snack', cal: '420 kcal', recipe: '🍞 pan\n🥑 aguacate\n\n🥑 Graso!' },
+                    { type: 'Cena', time: '🌙', name: 'Risotto Quinoa', desc: 'Con salmón', cal: '580 kcal', recipe: '🫘 quinoa\n🐟 salmón\n\n🍳 Gourmet!' }
+                ]},
+                { day: 'Martes', tip: '🥑 Tip: Grasas saludables.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Waffles Banana', desc: 'Con caramelo', cal: '550 kcal', recipe: '🧇 waffles\n🍌 banana\n\n🍳 Indulgente!' },
+                    { type: 'Snack AM', time: '🧀', name: 'Queso+Frutas', desc: 'Manchego', cal: '320 kcal', recipe: '🧀 queso\n🍇 uvas\n\n🍷 Gourmet!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Burrito Bowl', desc: 'Mexicano', cal: '680 kcal', recipe: '🍚 arroz\n🫘 frijoles\n\n🌯 Fiesta!' },
+                    { type: 'Snack PM', time: '🍪', name: 'Galletas Avena', desc: 'Caseras', cal: '350 kcal', recipe: '🥣 avena\n🥜 almendras\n\n🍪 Dulce!' },
+                    { type: 'Cena', time: '🌙', name: 'Pollo Mostaza', desc: 'Con papas', cal: '620 kcal', recipe: '🍗 pollo\n🥔 papas\n\n🍳 Cremoso!' }
+                ]},
+                { day: 'Miércoles', tip: '🥤 Tip: Batidos proteicos.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Benedict', desc: 'Huevos+holandesa', cal: '560 kcal', recipe: '🥚 huevos\n🧈 holandesa\n\n👨‍🍳 Lujo!' },
+                    { type: 'Snack AM', time: '🍎', name: 'Manzana+Maní', desc: 'Abundante', cal: '340 kcal', recipe: '🍎 manzana\n🥜 maní\n\n❤️ Crujiente!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Curry Garbanzos', desc: 'Premium', cal: '620 kcal', recipe: '🍛 curry\n🫘 garbanzos\n\n🍛 Aromático!' },
+                    { type: 'Snack PM', time: '🥤', name: 'Batido Aguacate', desc: 'Con cacao', cal: '380 kcal', recipe: '🥑 aguacate\n🍫 cacao\n\n💚 Cremoso!' },
+                    { type: 'Cena', time: '🌙', name: 'Costillas', desc: 'Glaseadas', cal: '650 kcal', recipe: '🍖 costillas\n🍯 miel\n\n🔥 Tierno!' }
+                ]},
+                { day: 'Jueves', tip: '⏰ Tip: Come cada 3 horas.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Granola Bowl', desc: 'Supreme', cal: '530 kcal', recipe: '🥣 granola\n🥛 yogur griego\n\n🥣 Crujiente!' },
+                    { type: 'Snack AM', time: '🥜', name: 'Mix Frutos', desc: 'Premium', cal: '360 kcal', recipe: '🥜 nueces\n🫐 arándanos\n\n🎁 Lujo!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Hamburguesa', desc: 'Gourmet', cal: '720 kcal', recipe: '🍔 res\n🧀 queso\n\n🍔 Carnuda!' },
+                    { type: 'Snack PM', time: '🧁', name: 'Muffin Banana', desc: 'Casero', cal: '320 kcal', recipe: '🍌 banana\n🥜 nueces\n\n🧁 Esponjoso!' },
+                    { type: 'Cena', time: '🌙', name: 'Pad Thai', desc: 'Completo', cal: '600 kcal', recipe: '🍜 fideos\n🍗 pollo\n\n🥢 Bangkok!' }
+                ]},
+                { day: 'Viernes', tip: '⛽ Tip: Come antes entrenar.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Crepes Sarraceno', desc: 'Con nutella', cal: '540 kcal', recipe: '🥞 crepes\n🍫 nutella\n\n🥞 Francés!' },
+                    { type: 'Snack AM', time: '🥛', name: 'Batido Fresa', desc: 'Cremoso', cal: '340 kcal', recipe: '🍓 fresa\n🥣 avena\n\n💗 Rosa!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Lasaña Vegetales', desc: 'Carnuda', cal: '650 kcal', recipe: '🍝 lasaña\n🍆 berenjena\n\n🇮🇹 Capas!' },
+                    { type: 'Snack PM', time: '🍦', name: 'Nice Cream', desc: 'Mango', cal: '280 kcal', recipe: '🍌 banana\n🥭 mango\n\n🍨 Helado!' },
+                    { type: 'Cena', time: '🌙', name: 'Albóndigas', desc: 'En salsa', cal: '620 kcal', recipe: '🍖 res\n🍅 salsa\n\n🍝 Comfort!' }
+                ]},
+                { day: 'Sábado', tip: '👨‍👩‍👧‍👦 Tip: Come con familia.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Shakshuka', desc: 'Abundante', cal: '520 kcal', recipe: '🥚 3 huevos\n🍅 tomate\n\n🍳 Especiado!' },
+                    { type: 'Snack AM', time: '🧇', name: 'Tortitas', desc: 'Con sirope', cal: '380 kcal', recipe: '🥞 pancakes\n🍁 sirope\n\n🥞 Brunch!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Tacos Pescado', desc: 'Abundantes', cal: '680 kcal', recipe: '🐟 pescado\n🌽 tortillas\n\n🌮 Festival!' },
+                    { type: 'Snack PM', time: '🍇', name: 'Tabla Quesos', desc: 'Premium', cal: '420 kcal', recipe: '🧀 quesos\n🍇 frutas\n\n🍷 Compartir!' },
+                    { type: 'Cena', time: '🌙', name: 'Pechuga Rellena', desc: 'Lujo', cal: '580 kcal', recipe: '🍗 pechuga\n🥬 espinaca\n\n👨‍🍳 Elegante!' }
+                ]},
+                { day: 'Domingo', tip: '📋 Tip: Planifica semana.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Brunch Premium', desc: 'Completo', cal: '620 kcal', recipe: '🥚 huevos\n🥓 bacon\n\n🍳 Domingo!' },
+                    { type: 'Snack AM', time: '🍌', name: 'Smoothie Bowl', desc: 'Deluxe', cal: '420 kcal', recipe: '🍌 banana\n🥭 mango\n\n🌴 Lujo!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Pato Naranja', desc: 'Gourmet', cal: '680 kcal', recipe: '🦆 pato\n🍊 naranja\n\n🔥 Elegante!' },
+                    { type: 'Snack PM', time: '🍰', name: 'Brownie', desc: 'Saludable', cal: '340 kcal', recipe: '🍫 chocolate\n🥜 nueces\n\n🍫 Decadencia!' },
+                    { type: 'Cena', time: '🌙', name: 'Filete+Papas', desc: 'Gratinadas', cal: '720 kcal', recipe: '🥩 filete\n🥔 papas\n\n🔥 Lujo!' }
+                ]}
+            ],
+            normal: [
+                { day: 'Lunes', tip: '🌈 Tip: Balance proteína+carbos.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Omelette', desc: 'De verduras', cal: '380 kcal', recipe: '🥚 3 huevos\n🍄 champiñones\n\n🍳 Proteico!' },
+                    { type: 'Snack AM', time: '🍎', name: 'Manzana+Almendras', desc: 'Fresca', cal: '180 kcal', recipe: '🍎 manzana\n🥜 almendras\n\n🌟 Crujiente!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Arroz+Pollo', desc: 'Integral', cal: '520 kcal', recipe: '🍚 arroz integral\n🍗 pollo\n\n🍳 Nutritivo!' },
+                    { type: 'Snack PM', time: '🍊', name: 'Naranja', desc: 'Natural', cal: '90 kcal', recipe: '🍊 naranja\n\n✨ Vitamina C!' },
+                    { type: 'Cena', time: '🌙', name: 'Trucha+Brócoli', desc: 'Al horno', cal: '380 kcal', recipe: '🐟 trucha\n🥦 brócoli\n\n🔥 Delicado!' }
+                ]},
+                { day: 'Martes', tip: '🥗 Tip: Varía proteínas.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Yogur+Granola', desc: 'Griego', cal: '320 kcal', recipe: '🥛 yogur\n🥣 granola\n\n✨ Simple!' },
+                    { type: 'Snack AM', time: '🥝', name: 'Kiwi', desc: 'Tropical', cal: '110 kcal', recipe: '🥝 2 kiwis\n\n💚 Fresco!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Pollo+Papas', desc: 'A la plancha', cal: '480 kcal', recipe: '🍗 pollo\n🥔 papas\n\n🍳 Casero!' },
+                    { type: 'Snack PM', time: '🍌', name: 'Plátano+Chocolate', desc: 'Derretido', cal: '220 kcal', recipe: '🍌 plátano\n🍫 chocolate\n\n❤️ Dulce!' },
+                    { type: 'Cena', time: '🌙', name: 'Lentejas', desc: 'Guisadas', cal: '320 kcal', recipe: '🫘 lentejas\n🥕 verduras\n\n🍲 Reconfortante!' }
+                ]},
+                { day: 'Miércoles', tip: '🌈 Tip: Colores variados.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Pan+Queso', desc: 'Integral', cal: '300 kcal', recipe: '🍞 pan integral\n🧀 queso\n\n🍞 Mediterráneo!' },
+                    { type: 'Snack AM', time: '🍇', name: 'Uvas', desc: 'Frescas', cal: '100 kcal', recipe: '🍇 uvas\n\n🎯 Dulces!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Tuna Salad', desc: 'Ensalada', cal: '420 kcal', recipe: '🐟 atún\n🥬 lechuga\n\n🥗 Clásica!' },
+                    { type: 'Snack PM', time: '🍑', name: 'Durazno', desc: 'Natural', cal: '60 kcal', recipe: '🍑 durazno\n\n🌸 Jugoso!' },
+                    { type: 'Cena', time: '🌙', name: 'Tallarín', desc: 'Integral', cal: '380 kcal', recipe: '🍝 tallarín\n🍄 champiñones\n\n🍝 Vegetariano!' }
+                ]},
+                { day: 'Jueves', tip: '💧 Tip: Hidratación.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Avena+Canela', desc: 'Caliente', cal: '340 kcal', recipe: '🥣 avena\n🍌 banana\n\n🍳 Calentito!' },
+                    { type: 'Snack AM', time: '🍐', name: 'Pera+Nueces', desc: 'Crudas', cal: '160 kcal', recipe: '🍐 pera\n🥜 nueces\n\n🥄 Elegante!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Pollo Horno', desc: 'Con verduras', cal: '520 kcal', recipe: '🍗 pollo\n🥕 zanahorias\n\n🔥 Fácil!' },
+                    { type: 'Snack PM', time: '🍒', name: 'Cerezas', desc: 'Crujientes', cal: '80 kcal', recipe: '🍒 cerezas\n\n❤️ Dulces!' },
+                    { type: 'Cena', time: '🌙', name: 'Salmón', desc: 'Glaseado', cal: '420 kcal', recipe: '🐟 salmón\n🍯 miel\n\n🔥 Elegante!' }
+                ]},
+                { day: 'Viernes', tip: '🥢 Tip: Mastica bien.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Huevo Cocido', desc: 'Con tostada', cal: '280 kcal', recipe: '🥚 huevos\n🍞 pan\n\n🍳 Clásico!' },
+                    { type: 'Snack AM', time: '🫐', name: 'Arándanos', desc: 'Frescos', cal: '120 kcal', recipe: '🫐 arándanos\n\n💜 Antioxidantes!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Pasta Bolognesa', desc: 'Integral', cal: '540 kcal', recipe: '🍝 pasta\n🥩 carne\n\n🍝 Clásica!' },
+                    { type: 'Snack PM', time: '🍓', name: 'Fresas', desc: 'Naturales', cal: '60 kcal', recipe: '🍓 fresas\n\n❤️ Refrescante!' },
+                    { type: 'Cena', time: '🌙', name: 'Pavo Guisado', desc: 'Casero', cal: '380 kcal', recipe: '🦃 pavo\n🥔 papas\n\n🍲 Reconfortante!' }
+                ]},
+                { day: 'Sábado', tip: '👨‍👩‍👧‍👦 Tip: Disfruta.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Pancakes', desc: 'Caseros', cal: '420 kcal', recipe: '🥞 pancakes\n🍁 sirope\n\n🥞 Delicioso!' },
+                    { type: 'Snack AM', time: '🍊', name: 'Mandarina', desc: 'Jugosa', cal: '80 kcal', recipe: '🍊 mandarina\n\n🌟 Cítrica!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Asado Variado', desc: 'A la parrilla', cal: '580 kcal', recipe: '🥩 carnes\n🥗 ensalada\n\n🔥 Festivo!' },
+                    { type: 'Snack PM', time: '🍉', name: 'Sandía', desc: 'Refrescante', cal: '80 kcal', recipe: '🍉 sandía\n\n💧 Hidratante!' },
+                    { type: 'Cena', time: '🌙', name: 'Pastel Papa', desc: 'Gratinado', cal: '520 kcal', recipe: '🥔 papas\n🥩 carne\n\n🔥 Reconfortante!' }
+                ]},
+                { day: 'Domingo', tip: '📋 Tip: Organiza.', meals: [
+                    { type: 'Desayuno', time: '🌅', name: 'Desayuno Completo', desc: 'De todo', cal: '480 kcal', recipe: '🥚 huevos\n🍖 jamón\n\n🍳 Completo!' },
+                    { type: 'Snack AM', time: '🥝', name: 'Kiwi+Piña', desc: 'Tropical', cal: '130 kcal', recipe: '🥝 kiwi\n🍍 piña\n\n🌴 Tropical!' },
+                    { type: 'Almuerzo', time: '☀️', name: 'Estofado', desc: 'Lento', cal: '520 kcal', recipe: '🥩 res\n🥔 papas\n\n🍲 Delicioso!' },
+                    { type: 'Snack PM', time: '🍎', name: 'Manzana Roja', desc: 'Crujiente', cal: '95 kcal', recipe: '🍎 manzana\n\n✨ Natural!' },
+                    { type: 'Cena', time: '🌙', name: 'Merluza Rellena', desc: 'Gourmet', cal: '420 kcal', recipe: '🐟 merluza\n🦐 camarones\n\n🔥 Elegante!' }
+                ]}
+            ]
+        };
+
+        // Initialize meal completion tracking
+        function initMealTracking() {
+            mealCompletion = {};
+            for (let i = 0; i < 7; i++) {
+                mealCompletion[i] = {};
+                for (let j = 0; j < 5; j++) {
+                    mealCompletion[i][j] = false;
+                }
+            }
+        }
+
+        function setIMC(imc, btn) {
+            selectedIMC = imc;
+            document.querySelectorAll('.imc-btn').forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+            document.getElementById('day-area').classList.remove('hidden');
+            document.getElementById('menu-area').classList.add('hidden');
+            initMealTracking();
+            renderDays();
+            setTimeout(() => {
+                document.getElementById('day-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function renderDays() {
+            const grid = document.getElementById('day-grid');
+            grid.innerHTML = dayNames.map((day, i) => `
+                <button onclick="selectDay(${i}, this)" class="day-btn day-btn-${i} w-full p-3 md:p-4 border-3 border-green-200 rounded-2xl hover:border-yellow-400 transition-all bg-gradient-to-br from-white via-green-50 to-yellow-50 group">
+                    <span class="text-2xl md:text-3xl block mb-1 group-hover:scale-125 transition-transform">${dayFruits[i]}</span>
+                    <span class="font-bold text-green-800 text-xs md:text-sm block">${day.substring(0,3)}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectDay(dayIndex, btn) {
+            selectedDayIndex = dayIndex;
+            document.querySelectorAll('[class*="day-btn-"]').forEach(b => b.classList.remove('active-btn'));
+            btn.classList.add('active-btn');
+            
+            const dayData = menus[selectedIMC][dayIndex];
+            document.getElementById('day-title').textContent = `${dayFruits[dayIndex]} ${dayData.day}`;
+            document.getElementById('menu-area').classList.remove('hidden');
+            
+            const content = document.getElementById('menu-content');
+            const mealColors = [
+                'from-yellow-100 to-orange-100',
+                'from-green-100 to-lime-100', 
+                'from-amber-100 to-yellow-100',
+                'from-rose-100 to-pink-100',
+                'from-indigo-100 to-purple-100'
+            ];
+            
+            let mealsHTML = dayData.meals.map((meal, index) => `
+                <div class="meal-card bg-gradient-to-r ${mealColors[index]} rounded-3xl p-5 shadow-lg border-2 border-white hover:shadow-xl transition-all" id="meal-card-${index}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1 cursor-pointer" onclick="toggleRecipe('recipe-${index}')">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-3xl">${meal.time}</span>
+                                <span class="meal-type-badge">${meal.type}</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-green-900">${meal.name}</h3>
+                            <p class="text-green-700 text-sm mt-1">${meal.desc}</p>
+                            <span class="inline-block bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-xs font-black px-4 py-2 rounded-full shadow-md mt-2">${meal.cal}</span>
+                        </div>
+                        <div class="ml-4 flex flex-col items-center gap-2">
+                            <input type="checkbox" class="meal-checkbox" id="meal-check-${index}"
+                                onchange="toggleMeal(${dayIndex}, ${index}, this)">
+                            <label for="meal-check-${index}" class="text-xs font-bold text-green-600">Hecho</label>
+                        </div>
+                    </div>
+                    
+                    <div id="recipe-${index}" class="recipe-box hidden">
+                        <div class="bg-white/80 backdrop-blur rounded-2xl p-5 mt-3 border-2 border-dashed border-green-300">
+                            <div class="flex gap-2 mb-4">
+                                <button onclick="toggleIngredients('ingredients-${index}')" class="btn-juicy flex-1 text-white font-bold py-2 px-4 rounded-xl">
+                                    🛒 Ingredientes
+                                </button>
+                                <button onclick="togglePreparation('preparation-${index}')" class="btn-juicy flex-1 text-white font-bold py-2 px-4 rounded-xl">
+                                    👨‍🍳 Preparación
+                                </button>
+                            </div>
+                            <div id="ingredients-${index}" class="ingredient-box hidden">
+                                <h4 class="font-black text-green-800 mb-3">🛒 Ingredientes</h4>
+                                <pre class="whitespace-pre-wrap font-sans text-green-700 text-sm">${meal.ingredients}</pre>
+                            </div>
+                            <div id="preparation-${index}" class="preparation-box hidden">
+                                <h4 class="font-black text-green-800 mb-3">👨‍🍳 Preparación</h4>
+                                <pre class="whitespace-pre-wrap font-sans text-green-700 text-sm">${meal.preparation}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            mealsHTML += `
+                <div class="mt-8 bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 rounded-3xl p-6 shadow-xl border-3 border-dashed border-blue-300">
+                    <div class="flex items-start gap-4">
+                        <span class="text-5xl">💡</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-black text-indigo-900 mb-2">Tip Nutricional</h3>
+                            <p class="text-indigo-800 font-semibold">${dayData.tip}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            content.innerHTML = mealsHTML;
+            
+            // Restore checkboxes
+            dayData.meals.forEach((_, index) => {
+                const checkbox = document.getElementById(`meal-check-${index}`);
+                if (checkbox && mealCompletion[dayIndex][index]) {
+                    checkbox.checked = true;
+                    document.getElementById(`meal-card-${index}`).classList.add('completed');
+                }
+            });
+            
+            updateProgress();
+            
+            setTimeout(() => {
+                document.getElementById('menu-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function toggleMeal(dayIndex, mealIndex, checkbox) {
+            mealCompletion[dayIndex][mealIndex] = checkbox.checked;
+            
+            const mealCard = document.getElementById(`meal-card-${mealIndex}`);
+            if (checkbox.checked) {
+                mealCard.classList.add('completed');
+            } else {
+                mealCard.classList.remove('completed');
+            }
+            
+            updateProgress();
+            checkGlobalCompletion(); // CHECK FOR GLOBAL COMPLETION
+        }
+
+        // NEW FUNCTION: Check if ALL meals in ALL days are completed
+        function checkGlobalCompletion() {
+            if (!selectedIMC) return;
+
+            let allCompleted = true;
+            
+            // Check all 7 days
+            for (let d = 0; d < 7; d++) {
+                // Get number of meals for this day (robustness)
+                const mealsCount = menus[selectedIMC][d].meals.length;
+                
+                for (let m = 0; m < mealsCount; m++) {
+                    if (!mealCompletion[d][m]) {
+                        allCompleted = false;
+                        break;
+                    }
+                }
+                if (!allCompleted) break;
+            }
+
+            if (allCompleted) {
+                setTimeout(() => {
+                    document.getElementById('congrats-modal').classList.remove('hidden');
+                }, 500); // Small delay for UX
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('congrats-modal').classList.add('hidden');
+        }
+
+        function updateProgress() {
+            if (selectedDayIndex === null) return;
+            
+            const dayMeals = mealCompletion[selectedDayIndex];
+            const completed = Object.values(dayMeals).filter(Boolean).length;
+            const total = Object.keys(dayMeals).length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            // Update progress circle
+            const circumference = 753.98;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            const progressFill = document.getElementById('progress-fill');
+            if (progressFill) {
+                progressFill.style.strokeDashoffset = offset;
+            }
+            
+            // Update percentage text
+            document.getElementById('progress-percent').textContent = percentage + '%';
+        }
+
+        function toggleRecipe(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function toggleIngredients(id) {
+            document.querySelectorAll('[id*="ingredients-"], [id*="preparation-"]').forEach(el => {
+                if (el.id !== id) el.classList.add('hidden');
+            });
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function togglePreparation(id) {
+            document.querySelectorAll('[id*="ingredients-"], [id*="preparation-"]').forEach(el => {
+                if (el.id !== id) el.classList.add('hidden');
+            });
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        function renderIMCButtons() {
+            const grid = document.getElementById('imc-grid');
+            const plans = [
+                { id: 'sobrepeso', label: 'Sobrepeso', emoji: '📉' },
+                { id: 'bajo', label: 'Bajo de Peso', emoji: '💪' },
+                { id: 'normal', label: 'Peso Normal', emoji: '✨' }
+            ];
+            
+            grid.innerHTML = plans.map(plan => `
+                <button onclick="setIMC('${plan.id}', this)" class="imc-btn bg-gradient-to-br from-white to-green-50 border-3 border-green-200 rounded-2xl p-6 hover:border-yellow-400 hover:shadow-xl transition-all font-bold text-green-800">
+                    <div class="text-4xl mb-2">${plan.emoji}</div>
+                    ${plan.label}
+                </button>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderIMCButtons();
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c4ddfa633b3b602',t:'MTc2OTU3NTg3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
