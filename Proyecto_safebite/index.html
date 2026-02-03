@@ -1,0 +1,1836 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAFEBITE PLUS | Nutrición 2026</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #22c55e;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --light: #ecfdf5;
+            --dark: #064e3b;
+        }
+
+        * { cursor: none !important; }
+        
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            font-size: 40px;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.15s ease-out, filter 0.3s;
+            transform: translate(-50%, -50%);
+            user-select: none;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+        }
+
+        #custom-cursor.clicked {
+            animation: appleClick 0.3s ease;
+        }
+
+        @keyframes appleClick {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3) rotate(15deg); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+
+        /* Animated Background */
+        .animated-bg {
+            background: linear-gradient(-45deg, #ecfdf5, #d1fae5, #a7f3d0, #6ee7b7, #34d399);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Elements */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-delay-1 { animation-delay: -2s; }
+        .floating-delay-2 { animation-delay: -4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* Pulse Animation */
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.8), 0 0 60px rgba(16, 185, 129, 0.4); }
+        }
+
+        /* Bounce Animation */
+        .bounce-in {
+            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Slide Animations */
+        .slide-up {
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Shimmer Effect */
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Rotating Icons */
+        .spin-slow {
+            animation: spinSlow 20s linear infinite;
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Glass Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Button Hover Effects */
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+        }
+
+
+        /* CALENDARIO Y FORMAS 2026 */
+        .day-box {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .day-active {
+            background: linear-gradient(135deg, #22c55e, #10b981) !important;
+            color: white !important;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+            transform: scale(1.05);
+        }
+
+        .alergia-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .alergia-card:hover {
+            border-color: var(--primary);
+            background: white;
+            transform: scale(1.05);
+        }
+
+        .day-box:hover:not(.day-header) {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+
+        .day-active {
+            background: linear-gradient(135deg, #22c55e, #10b981) !important;
+            color: white !important;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(34, 197, 94, 0.5);
+        }
+
+        /* Card Hover */
+        .diet-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .diet-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Input Focus */
+        .input-field:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Decorative Elements */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.1));
+            pointer-events: none;
+        }
+
+        /* Wave Animation */
+        .wave {
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        /* Progress Bar Animation */
+        .progress-fill {
+            animation: progressFill 2s ease-out forwards;
+        }
+
+        @keyframes progressFill {
+            from { width: 0%; }
+        }
+
+        /* Heartbeat for CTA */
+        .heartbeat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.05); }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-poppins animated-bg overflow-auto"><!-- Custom Cursor -->
+  <div id="custom-cursor">
+   🍎
+  </div><!-- Floating Decorative Elements -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+   <div class="absolute top-20 left-10 text-6xl floating opacity-60">
+    🥗
+   </div>
+   <div class="absolute top-40 right-20 text-5xl floating floating-delay-1 opacity-60">
+    🥑
+   </div>
+   <div class="absolute bottom-40 left-20 text-5xl floating floating-delay-2 opacity-60">
+    🍊
+   </div>
+   <div class="absolute bottom-20 right-10 text-6xl floating opacity-60">
+    🥕
+   </div>
+   <div class="absolute top-1/2 left-5 text-4xl floating floating-delay-1 opacity-50">
+    🍇
+   </div>
+   <div class="absolute top-1/3 right-5 text-4xl floating floating-delay-2 opacity-50">
+    🫐
+   </div>
+   <div class="deco-circle w-64 h-64 -top-20 -left-20 spin-slow"></div>
+   <div class="deco-circle w-96 h-96 -bottom-40 -right-40 spin-slow" style="animation-direction: reverse;"></div>
+  </div><!-- Main Container -->
+  <div class="relative z-10 w-full min-h-full"><!-- Header -->
+   <header class="glass sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4"><!-- Logo -->
+     <div class="flex items-center gap-3">
+<div class="flex flex-col items-center text-center leading-tight">
+  <img 
+    src="data:image/png;base64,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
+	alt="Logo SafeBite Plus"
+  class="w-60 h-15 object-contain"
+  >
+</div>
+      <div>
+
+  <p id="slogan" class="text-xs md:text-sm lg:text-base font-medium text-emerald-600 tracking-wide mt-1"></p>
+      </div>
+     </div><!-- Navigation -->
+     <nav id="main-nav" class="flex flex-wrap justify-center gap-2 md:gap-3"><button id="nav-inicio" onclick="showSection('inicio')" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-white border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-1"> 🏠 Inicio </button> <button id="nav-planes" onclick="showSection('planes')" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-white border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-1 hidden"> 📋 Planes </button> <button id="nav-calendario" onclick="showSection('calendario')" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-white border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-1 hidden"> 📅 Calendario </button> <button id="nav-carrito" onclick="showSection('carrito')" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-white border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-1 hidden relative"> 🛒 Carrito <span id="cart-badge" class="hidden absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span> </button> <button id="nav-nosotros" onclick="showSection('nosotros')" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-white border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white hover:shadow-lg hover:-translate-y-1"> 💚 Nosotros </button> <button id="nav-login" onclick="openAuthModal('login')" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-gradient-to-r from-amber-400 to-orange-500 text-white hover:shadow-lg hover:-translate-y-1"> 👤 Ingresar </button> <button id="nav-user" onclick="showUserMenu()" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg hover:-translate-y-1 hidden"> <span id="user-name-nav">👤</span> </button> <button id="nav-logout" onclick="logout()" class="nav-btn px-4 py-2 rounded-full font-semibold text-sm transition-all bg-red-500 text-white hover:bg-red-600 hover:shadow-lg hover:-translate-y-1 hidden"> 🚪 Salir </button>
+     </nav>
+    </div>
+   </header><!-- Main Content -->
+   <main class="max-w-6xl mx-auto px-4 py-8"><!-- INICIO Section -->
+    <section id="inicio" class="section-content slide-up"><!-- Hero Card -->
+     <div class="glass rounded-3xl p-8 md:p-12 shadow-2xl mb-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-green-300/30 to-emerald-400/30 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-60 h-60 bg-gradient-to-tr from-teal-300/30 to-cyan-400/30 rounded-full blur-3xl"></div>
+      <div class="relative z-10 text-center">
+       <div class="inline-block mb-6"><span class="px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full text-green-700 font-semibold text-sm"> ✨ Nutrición Segura y Personalizada ✨ </span>
+       </div>
+       <h2 class="text-4xl md:text-6xl font-black mb-6 leading-tight"><span class="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 bg-clip-text text-transparent"> Come Tranquilo, Vive Mejor </span> <br><span class="text-3xl md:text-5xl text-gray-700">Empieza Hoy</span></h2>
+       <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">Transforma tu forma de comer con planes nutricionales libres de alérgenos, hechos a tu medida. <span class="font-semibold text-green-600">¡Seguridad, salud y sabor en cada plato!</span></p>
+       <div class="flex flex-col sm:flex-row gap-4 justify-center"><button onclick="showSection('planes')" class="btn-primary px-8 py-4 rounded-2xl text-white font-bold text-lg shadow-xl heartbeat"> 🚀 Comenzar Ahora </button> <button onclick="showSection('nosotros')" class="px-8 py-4 rounded-2xl bg-white border-2 border-green-500 text-green-600 font-bold text-lg hover:bg-green-50 transition-all hover:-translate-y-1"> 📖 Conocer Más </button>
+       </div>
+      </div>
+     </div><!-- Stats Cards -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="glass rounded-2xl p-6 text-center bounce-in" style="animation-delay: 0.1s;">
+       <div class="text-4xl mb-2">
+        👥
+       </div>
+       <div class="text-3xl font-black text-green-600">
+        15K+
+       </div>
+       <div class="text-sm text-gray-600 font-medium">
+        Clientes Felices
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center bounce-in" style="animation-delay: 0.2s;">
+       <div class="text-4xl mb-2">
+        🏆
+       </div>
+       <div class="text-3xl font-black text-emerald-600">
+        98%
+       </div>
+       <div class="text-sm text-gray-600 font-medium">
+        Satisfacción
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center bounce-in" style="animation-delay: 0.3s;">
+       <div class="text-4xl mb-2">
+        📊
+       </div>
+       <div class="text-3xl font-black text-teal-600">
+        50+
+       </div>
+       <div class="text-sm text-gray-600 font-medium">
+        Planes Únicos
+       </div>
+      </div>
+      <div class="glass rounded-2xl p-6 text-center bounce-in" style="animation-delay: 0.4s;">
+       <div class="text-4xl mb-2">
+        ⭐
+       </div>
+       <div class="text-3xl font-black text-amber-500">
+        4.9
+       </div>
+       <div class="text-sm text-gray-600 font-medium">
+        Calificación
+       </div>
+      </div>
+     </div><!-- Features Grid -->
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="diet-card glass rounded-3xl p-6 text-center">
+       <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg"><span class="text-4xl">🥗</span>
+       </div>
+       <h3 class="text-xl font-bold text-gray-800 mb-2">Planes Personalizados</h3>
+       <p class="text-gray-600">Dietas adaptadas a tus alergias alimenticias.</p>
+      </div>
+      <div class="diet-card glass rounded-3xl p-6 text-center">
+       <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg"><span class="text-4xl">👨‍⚕️</span>
+       </div>
+       <h3 class="text-xl font-bold text-gray-800 mb-2">Calcula tu IMC</h3>
+       <p class="text-gray-600">Conoce la condición en que se encuentra tu cuerpo.</p>
+      </div>
+      <div class="diet-card glass rounded-3xl p-6 text-center">
+       <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center shadow-lg"><span class="text-4xl">📱</span>
+       </div>
+       <h3 class="text-xl font-bold text-gray-800 mb-2">Seguimiento 24/7</h3>
+       <p class="text-gray-600">Soporte continuo para acompañarte en cada paso.</p>
+      </div>
+     </div>
+    </section><!-- PLANES Section -->
+   <section id="planes" class="section-content hidden">
+     <div class="glass rounded-3xl p-8 shadow-2xl mb-8 max-w-6xl mx-auto">
+      <div class="text-center mb-8"><span class="inline-block px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full text-green-700 font-semibold text-sm mb-4"> 💎 Planes Premium </span>
+       <h2 class="text-3xl md:text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent mb-4">Elige Tu Plan Ideal</h2>
+       <p class="text-gray-600 max-w-xl mx-auto">Selecciona el plan que mejor se adapte a ti.</p>
+      </div><!-- Plans Grid -->
+	  <!-- Plan sin Gluten -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+       <div class="diet-card bg-white rounded-3xl p-6 border-2 border-amber-300 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-200 rounded-bl-full"></div>
+        <div class="text-center mb-6"><span class="text-5xl mb-4 block">🌾</span>
+         <h3 class="text-2xl font-bold text-gray-800">Sin Gluten</h3>
+         <p class="text-gray-500 text-sm">Especial para celíacos</p>
+        </div>
+        <div class="text-center mb-6"><span class="text-4xl font-black text-gray-800">$29.99</span> 
+        </div>
+        <ul class="space-y-3 mb-6 text-sm">
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Plan alimenticio semanal</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> 10 recetas exclusivas</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Lista de compras</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Preparación de cada plato</li>
+        </ul><button onclick="addToCart('sin-gluten', 'Sin Gluten', 29.99)" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-white font-semibold hover:shadow-lg transition-all"> Agregar al Carrito </button></div>
+        <!-- Plan sin Lactosa -->
+       <div class="diet-card bg-white rounded-3xl p-6 border-2 border-amber-300 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-200 rounded-bl-full"></div>
+        <div class="text-center mb-6"><span class="text-5xl mb-4 block">🥛</span>
+         <h3 class="text-2xl font-bold text-gray-800">Sin Lactosa</h3>
+         <p class="text-gray-500 text-sm">Digestión ligera</p>
+        </div>
+        <div class="text-center mb-6"><span class="text-4xl font-black text-gray-800">$29.99</span> 
+        </div>
+        <ul class="space-y-3 mb-6 text-sm">
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Plan alimenticio semanal sin lactosa</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Recetas exclusivas</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Lista de compras</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Preparación de cada plato</li>
+        </ul><button onclick="addToCart('sin-lactosa', 'Sin Lactosa', 29.99)" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-white font-semibold hover:shadow-lg transition-all"> Agregar al Carrito </button></div>
+	 <!-- Plan Maní -->
+       <div class="diet-card bg-white rounded-3xl p-6 border-2 border-amber-300 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-200 rounded-bl-full"></div>
+        <div class="text-center mb-6"><span class="text-5xl mb-4 block">🥜</span>
+         <h3 class="text-2xl font-bold text-gray-800">Sin Maní</h3>
+         <p class="text-gray-500 text-sm">Alimentación segura</p>
+        </div>
+        <div class="text-center mb-6"><span class="text-4xl font-black text-gray-800">$29.99</span> 
+        </div>
+        <ul class="space-y-3 mb-6 text-sm">
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Plan alimenticio semanal sin maní</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Recetas exclusivas</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Lista de compras</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Preparación de cada plato</li>
+        </ul><button onclick="addToCart('sin-mani', 'Sin Maní', 29.99)" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-white font-semibold hover:shadow-lg transition-all"> Agregar al Carrito </button></div>
+	 </div><!-- Plan sin Mariscos y pescado --><div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+       <div class="diet-card bg-white rounded-3xl p-6 border-2 border-amber-300 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-200 rounded-bl-full"></div>
+        <div class="text-center mb-6"><span class="text-5xl mb-4 block">🦐🐟</span>
+         <h3 class="text-2xl font-bold text-gray-800">Sin Mariscos ni pescado</h3>
+         <p class="text-gray-500 text-sm">Libre de productos del mar</p>
+        </div>
+        <div class="text-center mb-6"><span class="text-4xl font-black">$29.99</span> 
+        </div>
+        <ul class="space-y-3 mb-6 text-sm">
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Plan alimenticio semanal sin mariscos ni pescado</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Recetas exclusivas</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Lista de compras</li>
+         <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Preparación de cada plato</li>
+        </ul><button onclick="addToCart('sin-mariscos', 'Sin Mariscos ni pescado', 29.99)" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-white font-semibold hover:shadow-lg transition-all"> Agregar al Carrito </button></div>
+		<!-- Plan sin Huevo -->
+       <div class="diet-card bg-white rounded-3xl p-6 border-2 border-amber-300 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-100 to-amber-200 rounded-bl-full"></div>
+        <div class="text-center mb-6"><span class="text-5xl mb-4 block">🍳</span>
+         <h3 class="text-2xl font-bold text-gray-800">Sin Huevo</h3>
+         <p class="text-gray-500 text-sm">Apto para alérgicos</p>
+        </div>
+        <div class="text-center mb-6"><span class="text-4xl font-black text-gray-800">$29.99</span>
+        </div>
+        <ul class="space-y-3 mb-6 text-sm">
+         <li class="flex items-center gap-2"><span class="text-amber-500">✓</span> Plan alimenticio semanal sin huevo</li>
+         <li class="flex items-center gap-2"><span class="text-amber-500">✓</span> Recetas exclusivas</li>
+         <li class="flex items-center gap-2"><span class="text-amber-500">✓</span> Lista de compras</li>
+         <li class="flex items-center gap-2"><span class="text-amber-500">✓</span> Preparación de cada plato</li>
+        </ul><button onclick="addToCart('sin-huevo', 'Sin Huevo', 29.99)" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-white font-semibold hover:shadow-lg transition-all"> Agregar al Carrito </button>
+       </div>
+      </div><!-- Diet Types -->
+<!-- IMC Section -->
+<div class="glass rounded-3xl p-9 shadow-2xl mt-12 mb-8">
+  <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">
+    👨‍⚕️ Calcula tu IMC
+  </h3>
+
+  <div class="grid md:grid-cols-3 gap-6 mb-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        Peso (kg)
+      </label>
+      <input id="imc-peso" type="number"
+        class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 transition-all"
+        placeholder="Ej: 70">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        Estatura (m)
+      </label>
+      <input id="imc-altura" type="number" step="0.01"
+        class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 transition-all"
+        placeholder="Ej: 1.70">
+    </div>
+
+    <div class="flex items-end">
+      <button onclick="calcularIMC()"
+        class="btn-primary w-full py-3 rounded-xl text-white font-bold">
+        📊 Calcular IMC
+      </button>
+    </div>
+  </div>
+
+  <div id="imc-resultado"
+    class="hidden text-center mt-4 p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-200">
+    <p class="text-lg font-bold text-emerald-800">
+      Tu IMC: <span id="imc-valor"></span>
+    </p>
+    <p class="text-sm text-emerald-700 font-semibold">
+      Categoría: <span id="imc-categoria"></span>
+    </p>
+  </div>
+</div>
+
+     </div>
+    </section><!-- CALENDARIO Section -->
+    <section id="calendario" class="section-content hidden">
+            <div class="glass-panel p-10 rounded-[40px] mb-12">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                    <div>
+                        <h2 class="text-4xl font-black text-emerald-900">Plan 7 Días</h2>
+                        <p class="text-emerald-600 font-bold">Selecciona tu fecha de inicio y restricciones</p>
+                    </div>
+                    <input type="date" id="init-date" onchange="updateCalendar()" value="2026-01-12" class="p-4 rounded-2xl border-2 border-emerald-100 font-bold text-emerald-800 outline-none">
+                </div>
+
+                <div class="bg-emerald-50/50 p-8 rounded-[30px] border border-emerald-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <span id="cal-month-name" class="text-2xl font-black text-emerald-900 italic">Enero 2026</span>
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span class="text-xs font-bold text-emerald-600 uppercase">Sincronizado</span>
+                        </div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-4">
+				
+                        </div>
+                </div>
+            </div>
+
+            <h3 class="text-3xl font-black text-emerald-900 text-center mb-8">Filtros de Seguridad Alimentaria</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 mb-12">
+                <div class="alergia-card glass-panel p-6 rounded-3xl text-center cursor-pointer border-2 border-transparent" <button onclick="mostrarDietas('Sin Gluten')"></button>
+                    <img src="https://cdn-icons-png.flaticon.com/512/1410/1410529.png" class="w-16 h-16 mx-auto mb-4 grayscale hover:grayscale-0 transition" alt="Gluten">
+                    <span class="font-bold text-emerald-900">Sin Gluten</span>
+                </div>
+                <div class="alergia-card glass-panel p-6 rounded-3xl text-center cursor-pointer border-2 border-transparent" <button onclick="mostrarDietas('Sin Lactosa')"></button>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3050/3050186.png" class="w-16 h-16 mx-auto mb-4 grayscale hover:grayscale-0 transition" alt="Lactosa">
+                    <span class="font-bold text-emerald-900">Sin Lactosa</span>
+                </div>
+                <div class="alergia-card glass-panel p-6 rounded-3xl text-center cursor-pointer border-2 border-transparent" <button onclick="mostrarDietas('Sin Mariscos y Pescado')"></button>
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081974.png" class="w-16 h-16 mx-auto mb-4 grayscale hover:grayscale-0 transition" alt="Mariscos">
+                    <span class="font-bold text-emerald-900">Sin Mariscos y Pescado</span>
+                </div>
+                <div class="alergia-card glass-panel p-6 rounded-3xl text-center cursor-pointer border-2 border-transparent" <button onclick="mostrarDietas('Sin Maní')"></button>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2224/2224289.png" class="w-16 h-16 mx-auto mb-4 grayscale hover:grayscale-0 transition" alt="F. Secos">
+                    <span class="font-bold text-emerald-900">Sin Maní</span>
+                </div>
+                <div class="alergia-card glass-panel p-6 rounded-3xl text-center cursor-pointer border-2 border-transparent" <button onclick="mostrarDietas('Sin Huevos')"></button>
+                    <img src="https://cdn-icons-png.flaticon.com/512/112/112304.png" class="w-16 h-16 mx-auto mb-4 grayscale hover:grayscale-0 transition" alt="Huevo">
+                    <span class="font-bold text-emerald-900">Sin Huevo</span>
+                </div>
+            </div>
+
+            <div id="dieta-final" class="grid md:grid-cols-3 gap-8 hidden animate-slide-up">
+                  </div>
+        </section>
+    </main>
+     </section><!-- CARRITO Section -->
+    <section id="carrito" class="section-content hidden">
+     <div class="glass rounded-2xl p-6 shadow-2xl max-w-2xl mx-auto">
+      <div class="text-center mb-8"><span class="inline-block px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full text-green-700 font-semibold text-sm mb-4"> 🛒 Tu Carrito </span>
+       <h2 class="text-3xl md:text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent mb-4">Carrito de Compras</h2>
+
+      </div><!-- Empty Cart -->
+      <div id="empty-cart" class="text-center py-12">
+       <div class="text-8xl mb-4">
+        🛒
+       </div>
+       <h3 class="text-2xl font-bold text-gray-700 mb-2">Tu carrito está vacío</h3>
+       <p class="text-gray-500 mb-6">¡Agrega planes y comienza tu transformación!</p><button onclick="showSection('planes')" class="btn-primary px-8 py-3 rounded-xl text-white font-semibold"> Ver Planes </button>
+      </div><!-- Cart Items -->
+      <div id="cart-items" class="hidden space-y-4 mb-6">
+      </div><!-- Cart Summary -->
+      <div id="cart-summary" class="hidden">
+       <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-200">
+        <div class="flex justify-between items-center mb-4"><span class="text-lg font-semibold text-gray-700">Subtotal:</span> <span id="cart-subtotal" class="text-2xl font-black text-green-600">$0</span>
+        </div>
+		<div class="flex justify-between items-center mb-4"><span class="text-sm text-gray-600">Impuesto (15%):</span><span id="cart-tax" class="text-sm font-semibold text-blue-600">$0</span>
+		</div>
+        <div class="border-t-2 border-green-300 pt-4 mb-6">
+         <div class="flex justify-between items-center"><span class="text-xl font-bold text-gray-800">Total:</span> <span id="cart-total" class="text-3xl font-black text-green-600">$0</span>
+         </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4"><button onclick="clearCart()" class="px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-all"> 🗑️ Vaciar Carrito </button>
+        </div>
+		<form id="payment-form" class="mt-6 space-y-4">
+  <h3 class="text-lg font-bold text-gray-800">Datos de pago</h3>
+
+  <input type="text" id="card-name" placeholder="Nombre en la tarjeta"
+    class="w-full p-3 border rounded-xl" required>
+
+  <input type="text" id="card-number" placeholder="Número de tarjeta"
+    class="w-full p-3 border rounded-xl" maxlength="16" required>
+
+  <div class="grid grid-cols-2 gap-4">
+    <input type="text" id="card-expiry" placeholder="MM/AA"
+      class="p-3 border rounded-xl" required>
+
+    <input type="text" id="card-cvv" placeholder="CVV"
+      class="p-3 border rounded-xl" maxlength="4" required>
+  </div>
+
+<button type="button" onclick="completePurchase()" class="btn-primary w-full py-3 rounded-xl text-white font-bold">💳 Pagar ahora</button>
+
+       </div>
+
+<div id="allergy-access"
+     class="hidden mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+  <button onclick="goToAllergy('gluten.html')"
+    class="allergy-btn group glass p-6 rounded-2xl shadow-xl border border-white/30
+           hover:scale-105 hover:shadow-2xl transition-all duration-300">
+    <div class="text-5xl mb-3">🌾</div>
+    <h4 class="font-bold text-lg text-gray-800">Sin Gluten</h4>
+    <p class="text-sm text-gray-600">Especial para celíacos</p>
+  </button>
+
+  <button onclick="goToAllergy('lactosa.html')"
+    class="allergy-btn group glass p-6 rounded-2xl shadow-xl border border-white/30
+           hover:scale-105 hover:shadow-2xl transition-all duration-300">
+    <div class="text-5xl mb-3">🥛</div>
+    <h4 class="font-bold text-lg text-gray-800">Sin Lactosa</h4>
+    <p class="text-sm text-gray-600">Cuida tu digestión</p>
+  </button>
+
+  <button onclick="goToAllergy('mani.html')"
+    class="allergy-btn group glass p-6 rounded-2xl shadow-xl border border-white/30
+           hover:scale-105 hover:shadow-2xl transition-all duration-300">
+    <div class="text-5xl mb-3">🥜</div>
+    <h4 class="font-bold text-lg text-gray-800">Sin Maní</h4>
+    <p class="text-sm text-gray-600">Evita reacciones alérgicas</p>
+  </button>
+
+  <button onclick="goToAllergy('mariscos.html')"
+    class="allergy-btn group glass p-6 rounded-2xl shadow-xl border border-white/30
+           hover:scale-105 hover:shadow-2xl transition-all duration-300">
+    <div class="text-5xl mb-3">🦐</div>
+    <h4 class="font-bold text-lg text-gray-800">Sin Mariscos</h4>
+    <p class="text-sm text-gray-600">Seguro y balanceado</p>
+  </button>
+
+  <button onclick="goToAllergy('huevo.html')"
+    class="allergy-btn group glass p-6 rounded-2xl shadow-xl border border-white/30
+           hover:scale-105 hover:shadow-2xl transition-all duration-300">
+    <div class="text-5xl mb-3">🍳</div>
+    <h4 class="font-bold text-lg text-gray-800">Sin Huevo</h4>
+    <p class="text-sm text-gray-600">Alternativas nutritivas</p>
+  </button></div>
+      </div>
+     </div>
+
+   </section><!-- NOSOTROS Section -->
+    <section id="nosotros" class="section-content hidden">
+<div class="glass rounded-3xl p-8 shadow-2xl mb-8 max-w-6xl mx-auto">
+      <div class="text-center mb-8"><span class="inline-block px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full text-green-700 font-semibold text-sm mb-4"> 💚 Nuestra Historia </span>
+       <h2 class="text-3xl md:text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent mb-4">Sobre SafeBite Plus</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+       <div>
+        <p class="text-gray-600 leading-relaxed mb-6"><span class="text-5xl float-left mr-4 text-green-500">🥗</span> Nacimos en 2026 con un propósito muy claro: ayudar a las personas que necesitan una alimentación especial a comer de forma más segura, equilibrada y adaptada a su realidad. Sabemos que hoy en día la alimentación es un factor clave para mantener una buena salud y una adecuada calidad de vida, pero también entendemos que muchas personas que padecen alergias alimentarias tienen grandes dificultades para seguir una dieta adecuada.</p>
+        <p class="text-gray-600 leading-relaxed mb-6"> Nuestro proyecto surge como una opción práctica y accesible, basada en la creación de planes de alimentación personalizados según la salud, las alergias y los objetivos de cada persona. Buscamos que nuestros usuarios puedan alimentarse de forma más segura y consciente, reduciendo riesgos y cuidando su bienestar sin complicaciones ni restricciones innecesarias.</p>
+        <div class="flex flex-wrap gap-3"><span class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">🤝 Compromiso</span> <span class="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">❤️ Salud</span> <span class="px-4 py-2 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">✨ Innovación</span>
+        </div>
+       </div>
+       <div class="bg-gradient-to-br from-green-400 to-emerald-500 rounded-3xl p-8 text-white text-center">
+        <div class="text-6xl mb-4 wave inline-block">
+	<img 
+  src="https://alergiadexeus.es/wp-content/uploads/2021/08/alergia-alimentaria.jpg" 
+  alt="Alergia alimentaria"
+  class="w-full max-w-4xl h-auto mx-auto rounded-3xl shadow-xl">
+        </div>
+        <h3 class="text-2xl font-bold mb-2">Nuestra Misión</h3>
+        <p class="text-green-100">"Ayudar a las personas a comer sin miedo, ofreciendo una alimentación personalizada, segura y consciente que respete sus alergias y mejore su bienestar diario."</p>
+       </div>
+      </div>
+
+     </div><!-- Team Section -->
+<div class="glass rounded-3xl p-8 shadow-2xl mb-8 max-w-6xl mx-auto">
+      <h3 class="text-2xl font-bold text-center mb-8 text-gray-800">❤️ Algunos de nuestros beneficios ❤️</h3>
+	<img 
+  src="https://www.consumer.es/app/uploads/fly-images/107381/img_alergia-intolerancia-alimentos.hd_-2-1200x550-cc.jpg" 
+  alt="Alergia alimentaria"
+  class="w-full max-w-3xl h-auto mx-auto rounded-2xl shadow-xl mb-8">
+  
+	<div class="grid md:grid-cols-3 gap-6">
+       <div class="diet-card bg-green-100 rounded-2xl p-6 text-center">
+        <h4 class="font-bold text-gray-800">Evitamos el consumo de alimentos que puedan desencadenar reacciones alérgicas</h4>
+       </div>
+       <div class="diet-card bg-green-100 rounded-2xl p-6 text-center">
+        <h4 class="font-bold text-gray-800">Damos recomendaciones sencillas para mejorar sus hábitos alimenticios</h4>
+       </div>
+       <div class="diet-card bg-green-100 rounded-2xl p-6 text-center">
+        <h4 class="font-bold text-gray-800">Brindamos planes semanales con sus ingredientes y preparación</h4>
+
+       </div>
+      </div>
+     </div><!-- Contact Section -->
+<div class="glass rounded-3xl p-8 shadow-2xl mb-8 max-w-6xl mx-auto">
+      <h3 class="text-2xl font-bold text-center mb-8 text-gray-800">📬 Contáctanos</h3>
+      <div class="grid md:grid-cols-2 gap-8">
+       <div>
+        <form id="contact-form" class="space-y-4">
+         <div><label class="block text-sm font-medium text-gray-700 mb-1" for="contact-name">Nombre</label> <input type="text" id="contact-name" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 transition-all" placeholder="Tu nombre" required>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1" for="contact-email">Email</label> <input type="email" id="contact-email" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 transition-all" placeholder="tu@email.com" required>
+         </div>
+         <div><label class="block text-sm font-medium text-gray-700 mb-1" for="contact-message">Mensaje</label> <textarea id="contact-message" rows="4" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-green-500 transition-all resize-none" placeholder="¿En qué podemos ayudarte?" required></textarea>
+         </div><button type="submit" class="btn-primary w-full py-3 rounded-xl text-white font-semibold"> 📨 Enviar Mensaje </button>
+        </form>
+       </div>
+       <div class="space-y-4">
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6">
+        <h4 class="font-bold text-gray-800">Si quieres que consideremos ciertos ingredientes que prefieras o tienes más de una alergia y deseas un plan personalizado, escríbenos a nuestro teléfono o mándanos un correo. </h4>		
+
+	   <img 
+  src="https://www.muyseguridad.net/wp-content/uploads/2019/04/correo_electronico_anonimo.jpg" 
+  alt="Alergia alimentaria"
+  class="w-80 h-35 max-w-4xl mx-auto rounded-3xl shadow-xl">  
+		 </div>
+         </div>
+         <div class="flex items-center gap-4 mb-4">
+          <div class="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xl">
+           📞
+          </div>
+          <div>
+           <p class="font-bold text-gray-800">Teléfono</p>
+           <p class="text-gray-600">+593 968389489</p>
+          </div>
+         </div>
+         <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-teal-500 flex items-center justify-center text-white text-xl">
+           ✉️
+          </div>
+          <div>
+           <p class="font-bold text-gray-800">Email</p>
+           <p class="text-gray-600">hola@safebiteplus.com</p>
+          </div>
+         </div>
+        </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main><!-- Footer -->
+   <footer class="glass mt-8 py-8 border-t border-white/30">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+     <div class="flex items-center justify-center gap-2 mb-4"><span class="text-3xl">🍃</span> <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">SAFEBITE PLUS</span>
+     </div>
+     <p class="text-gray-600 text-sm mb-4">Tu compañero en el camino hacia una alimentación más segura</p>
+     <p class="text-gray-500 text-xs">© 2026 SafeBite Plus. Todos los derechos reservados. 🌿</p>
+    </div>
+   </footer>
+  </div><!-- Auth Modal -->
+  <div id="auth-modal" class="fixed inset-0 z-50 hidden">
+   <div class="modal-overlay absolute inset-0" onclick="closeAuthModal()"></div>
+   <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="glass rounded-3xl p-8 w-full max-w-md relative bounce-in shadow-2xl"><button onclick="closeAuthModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center text-xl transition-all"> × </button> <!-- Login Form -->
+     <div id="login-form-container">
+      <div class="text-center mb-6">
+       <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-4xl shadow-lg pulse-glow">
+        👤
+       </div>
+       <h3 class="text-2xl font-bold text-gray-800">¡Bienvenido de vuelta!</h3>
+       <p class="text-gray-500 text-sm">Ingresa a tu cuenta SafeBite</p>
+      </div>
+      <form id="login-form" class="space-y-4">
+       <div><label class="block text-sm font-medium text-gray-700 mb-1" for="login-email">Email</label> <input type="email" id="login-email" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all" placeholder="tu@email.com" required>
+       </div>
+       <div><label class="block text-sm font-medium text-gray-700 mb-1" for="login-password">Contraseña</label> <input type="password" id="login-password" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all" placeholder="••••••••" required>
+       </div><button type="submit" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-lg"> 🚀 Iniciar Sesión </button>
+      </form>
+      <div class="mt-6 text-center">
+       <p class="text-gray-500 text-sm">¿No tienes cuenta? <button onclick="switchToRegister()" class="text-green-600 font-semibold hover:underline">Regístrate aquí</button></p>
+      </div>
+     </div><!-- Register Form -->
+     <div id="register-form-container" class="hidden">
+      <div class="text-center mb-6">
+       <div class="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-4xl shadow-lg pulse-glow">
+        👤
+       </div>
+       <h3 class="text-2xl font-bold text-gray-800">¡Únete a SafeBite!</h3>
+       <p class="text-gray-500 text-sm">Crea tu cuenta gratuita</p>
+      </div>
+      <form id="register-form" class="space-y-4">
+       <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="register-name">Nombre</label> <input type="text" id="register-name" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all" placeholder="Juan" required>
+        </div>
+        <div><label class="block text-sm font-medium text-gray-700 mb-1" for="register-lastname">Apellido</label> <input type="text" id="register-lastname" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all" placeholder="Pérez" required>
+        </div>
+       </div>
+       <div><label class="block text-sm font-medium text-gray-700 mb-1" for="register-email">Email</label> <input type="email" id="register-email" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all" placeholder="tu@email.com" required>
+       </div>
+       <div><label class="block text-sm font-medium text-gray-700 mb-1" for="register-password">Contraseña</label> <input type="password" id="register-password" class="input-field w-full px-4 py-3 rounded-xl border-2 border-gray-200 transition-all" placeholder="Mínimo 8 caracteres" required minlength="8">
+       </div>
+       <div><label class="block text-sm font-medium text-gray-700 mb-1" for="register-goal" </select>
+       </div><button type="submit" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-lg"> 🎉 Crear Cuenta </button>
+      </form>
+      <div class="mt-6 text-center">
+       <p class="text-gray-500 text-sm">¿Ya tienes cuenta? <button onclick="switchToLogin()" class="text-green-600 font-semibold hover:underline">Inicia sesión</button></p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Success Toast -->
+  <div id="success-toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-2xl shadow-2xl z-50 hidden bounce-in">
+   <div class="flex items-center gap-3"><span class="text-2xl">✅</span> <span id="toast-message" class="font-semibold">¡Acción completada!</span>
+   </div>
+  </div>
+  <script>
+        // ===== CONFIGURATION =====
+let userIMC = null;
+let userIMCCategory = null;
+let hasPurchased = false;
+  
+	  const defaultConfig = {
+            brand_name: 'SAFEBITE PLUS',
+            slogan_text: '🌱 Transforma tu vida, un bocado a la vez 🌱'
+        };
+
+        let config = { ...defaultConfig };
+        let currentMonth = 0;
+        let currentYear = 2026;
+        let selectedPlan = null;
+        let appleColors = ['🍎', '🍏', '🍎', '🍏'];
+        let colorIndex = 0;
+        let isLoggedIn = false;
+        let currentUser = null;
+        let shoppingCart = [];
+
+        // ===== CURSOR FUNCTIONALITY =====
+        const cursor = document.getElementById('custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('click', () => {
+            colorIndex = (colorIndex + 1) % appleColors.length;
+            cursor.textContent = appleColors[colorIndex];
+            cursor.classList.add('clicked');
+            setTimeout(() => cursor.classList.remove('clicked'), 300);
+        });
+
+        // ===== NAVIGATION =====
+        function showSection(sectionId) {
+            // Check if user needs to be logged in
+            if (!isLoggedIn && (sectionId === 'planes' || sectionId === 'calendario' || sectionId === 'carrito')) {
+                showToast('⚠️ Por favor inicia sesión para acceder a esta sección');
+                openAuthModal('login');
+                return;
+            }
+
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('slide-up');
+            
+            if (sectionId === 'calendario') {
+                renderCalendar();
+            }
+            if (sectionId === 'carrito') {
+                renderCart();
+            }
+        }
+
+        // ===== AUTH FUNCTIONS =====
+        function updateNavigation() {
+            if (isLoggedIn) {
+                document.getElementById('nav-login').classList.add('hidden');
+                document.getElementById('nav-user').classList.remove('hidden');
+                document.getElementById('nav-logout').classList.remove('hidden');
+                document.getElementById('nav-planes').classList.remove('hidden');
+                document.getElementById('nav-calendario').classList.remove('hidden');
+                document.getElementById('nav-carrito').classList.remove('hidden');
+                document.getElementById('user-name-nav').textContent = `👤 ${currentUser.name}`;
+            } else {
+                document.getElementById('nav-login').classList.remove('hidden');
+                document.getElementById('nav-user').classList.add('hidden');
+                document.getElementById('nav-logout').classList.add('hidden');
+                document.getElementById('nav-planes').classList.add('hidden');
+                document.getElementById('nav-calendario').classList.add('hidden');
+                document.getElementById('nav-carrito').classList.add('hidden');
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            currentUser = null;
+            shoppingCart = [];
+            updateNavigation();
+            updateCartBadge();
+            showSection('inicio');
+            showToast('👋 Sesión cerrada exitosamente');
+        }
+
+        function showUserMenu() {
+            showToast(`👋 Hola, ${currentUser.name}!`);
+        }
+
+        // ===== CART FUNCTIONS =====
+        function addToCart(planId, planName, price) {
+            if (!isLoggedIn) {
+                showToast('⚠️ Por favor inicia sesión para agregar al carrito');
+                openAuthModal('login');
+                return;
+            }
+
+            const existingItem = shoppingCart.find(item => item.id === planId);
+            if (existingItem) {
+                showToast('ℹ️ Este plan ya está en tu carrito');
+                return;
+            }
+
+            shoppingCart.push({
+                id: planId,
+                name: planName,
+                price: price,
+                quantity: 1
+            });
+
+            updateCartBadge();
+            showToast(`✅ Plan ${planName} agregado al carrito`);
+        }
+
+        function removeFromCart(planId) {
+            shoppingCart = shoppingCart.filter(item => item.id !== planId);
+            updateCartBadge();
+            renderCart();
+            showToast('🗑️ Plan eliminado del carrito');
+        }
+
+        function clearCart() {
+            if (shoppingCart.length === 0) return;
+            
+            const confirmClear = document.createElement('div');
+            confirmClear.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+            confirmClear.innerHTML = `
+                <div class="modal-overlay absolute inset-0"></div>
+                <div class="glass rounded-3xl p-8 max-w-md relative bounce-in shadow-2xl">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">¿Vaciar carrito?</h3>
+                    <p class="text-gray-600 mb-6">¿Estás seguro de que deseas eliminar todos los planes del carrito?</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="this.closest('.fixed').remove()" class="px-6 py-3 rounded-xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition-all">
+                            Cancelar
+                        </button>
+                        <button onclick="confirmClearCart()" class="px-6 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition-all">
+                            Sí, vaciar
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(confirmClear);
+        }
+
+        function confirmClearCart() {
+            shoppingCart = [];
+            updateCartBadge();
+            renderCart();
+            document.querySelector('.fixed.z-50')?.remove();
+            showToast('🗑️ Carrito vaciado');
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            if (shoppingCart.length > 0) {
+                badge.textContent = shoppingCart.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderCart() {
+            const emptyCart = document.getElementById('empty-cart');
+            const cartItems = document.getElementById('cart-items');
+            const cartSummary = document.getElementById('cart-summary');
+
+            if (shoppingCart.length === 0) {
+                emptyCart.classList.remove('hidden');
+                cartItems.classList.add('hidden');
+                cartSummary.classList.add('hidden');
+                return;
+            }
+
+            emptyCart.classList.add('hidden');
+            cartItems.classList.remove('hidden');
+            cartSummary.classList.remove('hidden');
+
+            const planIcons = {
+                'sin-gluten': '🌾',
+                'sin-lactosa': '🥛',
+                'sin-mani': '🥜',
+                'sin-mariscos': '🦐',				
+                'sin-huevo': '🍳'
+            };
+
+            cartItems.innerHTML = shoppingCart.map(item => `
+                <div class="glass rounded-2xl p-6 flex items-center justify-between gap-4 bounce-in">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-3xl shadow-lg">
+                            ${planIcons[item.id]}
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-lg">Plan ${item.name}</h4>
+                            <p class="text-green-600 font-semibold">$${item.price}</p>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="w-10 h-10 rounded-full bg-red-100 text-red-600 hover:bg-red-200 flex items-center justify-center transition-all">
+                        ✕
+                    </button>
+                </div>
+            `).join('');
+       let subtotal = 0;
+
+shoppingCart.forEach(item => {
+  subtotal += item.price * item.quantity;
+});
+
+const impuesto = subtotal * 0.15;
+const total = subtotal + impuesto;
+
+// actualizar UI
+document.getElementById('cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+document.getElementById('cart-tax').textContent = `$${impuesto.toFixed(2)}`;
+document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`; }
+
+        function checkout() {
+            const total = shoppingCart.reduce((sum, item) => sum + item.price, 0);
+            const discount = total >= 100 ? 10 : 0;
+            const finalTotal = total - discount;
+
+            const checkoutModal = document.createElement('div');
+            checkoutModal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4';
+            checkoutModal.innerHTML = `
+                <div class="modal-overlay absolute inset-0" onclick="this.closest('.fixed').remove()"></div>
+                <div class="glass rounded-3xl p-8 max-w-md w-full relative bounce-in shadow-2xl">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-4xl pulse-glow">
+                            💳
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Resumen de Compra</h3>
+                    </div>
+                    <div class="space-y-3 mb-6">
+                        ${shoppingCart.map(item => `
+                            <div class="flex justify-between text-gray-700">
+                                <span>Plan ${item.name}</span>
+                                <span class="font-semibold">$${item.price}</span>
+                            </div>
+                        `).join('')}
+                        ${discount > 0 ? `
+                            <div class="flex justify-between text-orange-500 font-semibold">
+                                <span>Descuento</span>
+                                <span>-$${discount}</span>
+                            </div>
+                        ` : ''}
+                        <div class="border-t-2 pt-3 flex justify-between text-xl font-bold text-green-600">
+                            <span>Total</span>
+                            <span>$${finalTotal}</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-gray-500 text-sm mb-6">
+                        ℹ️ Este es un demo. En producción, aquí se procesaría el pago real.
+                    </p>
+                    <button onclick="completePurchase()" class="btn-primary w-full py-3 rounded-xl text-white font-bold">
+                        ✅ Confirmar Compra
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(checkoutModal);
+        }
+
+function completePurchase() {
+    // Cierra el modal si existe
+    document.querySelector('.fixed.z-50')?.remove();
+
+    // Mensaje de éxito
+    showToast('🎉 Compra confirmada. Selecciona tu plan por alergia');
+
+    // MOSTRAR botones de alergias
+    const allergySection = document.getElementById("allergy-access");
+    if (allergySection) {
+        allergySection.classList.remove("hidden");
+    }
+
+    // Desbloquear botones
+    document.querySelectorAll(".allergy-btn").forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove("opacity-50", "cursor-not-allowed");
+    });
+
+    // 🚫 NO cambiar de sección
+    // 🚫 NO volver a login
+    // 🚫 NO vaciar carrito aquí
+}
+
+function showAllergyButtons() {
+    document.getElementById('allergy-access').classList.remove('hidden');
+}
+
+function goToAllergy(page) {
+    window.location.href = page;
+}
+
+
+        // ===== PLANS =====
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            const planNames = {
+                'basico': '🌿 Plan Básico - $29/mes',
+                'pro': '🌟 Plan Pro - $59/mes',
+                'elite': '👑 Plan Elite - $99/mes'
+            };
+            
+            showToast(`¡Plan ${plan.charAt(0).toUpperCase() + plan.slice(1)} seleccionado!`);
+        }
+function calcularIMC() {
+  const peso = parseFloat(document.getElementById("imc-peso").value);
+  const altura = parseFloat(document.getElementById("imc-altura").value);
+
+  if (!peso || !altura || altura <= 0) {
+    showToast("⚠️ Ingresa peso y estatura válidos");
+    return;
+  }
+
+  const imc = peso / (altura * altura);
+  const imcRedondeado = imc.toFixed(1);
+
+  let categoria = "";
+  let imcKey = "";
+
+  if (imc < 18.5) {
+    categoria = "Bajo peso";
+    imcKey = "bajo";
+  } else if (imc < 25) {
+    categoria = "Peso normal";
+    imcKey = "normal";
+  } else {
+    categoria = "Sobrepeso";
+    imcKey = "alto";
+  }
+
+  userIMC = imcRedondeado;
+  userIMCCategory = imcKey;
+
+  document.getElementById("imc-valor").textContent = imcRedondeado;
+  document.getElementById("imc-categoria").textContent = categoria;
+  document.getElementById("imc-resultado").classList.remove("hidden");
+
+  showToast("✅ IMC calculado correctamente");
+}
+
+        // ===== CALENDAR =====
+       // Calendar Logic
+         function updateCalendar() {
+            const startInput = document.getElementById('init-date').value;
+            const startDate = new Date(startInput + 'T12:00:00');
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = "";
+            
+            const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            document.getElementById('cal-month-name').innerText = `${monthNames[startDate.getMonth()]} 2026`;
+
+            for(let i=0; i<14; i++) {
+                let current = new Date(startDate);
+                current.setDate(startDate.getDate() + (i - 3));
+                let isPlanDay = (i >= 3 && i < 10);
+                
+                grid.innerHTML += `
+                    <div class="day-box p-4 rounded-2xl text-center flex flex-col items-center justify-center ${isPlanDay ? 'day-active bg-emerald-100' : 'bg-white opacity-40'}">
+                        <span class="text-[10px] uppercase font-black mb-1">${current.toLocaleDateString('es', {weekday: 'short'})}</span>
+                        <span class="text-xl font-black">${current.getDate()}</span>
+                    </div>`;
+            }
+        }
+
+        // Dieta Display
+const dietasDB = {
+  "Sin Gluten": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://redsevillasingluten.org/wp-content/uploads/2022/07/ensalada-verano-vegetales-temporada-sin-gluten-rssg.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "2 tostadas de pan sin gluten, 1 aguacate, 2 huevos fritos y sésamo.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Yogur de coco con nueces y manzana.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Batido de leche de almendras, fresas, chía, avena certificada y 2 cucharadas de mantequilla de maní.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Seco de pollo, arroz integral y ensalada con aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Tortilla de champiñones con 3 huevos y espárragos con pan sin gluten.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://snuks.com.ar/wp-content/uploads/2021/11/xSNK11_BLOG_Portada_15Almuerzos_RX.jpg.pagespeed.ic.d16njJPjmn.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "150g de salmón al horno con quinoa y espárragos.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Ensalada de garbanzos con atún y aceitunas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Lentejas estofadas con verduras y aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Avena certificada sin gluten con leche soja y cacao.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Fajitas de pollo en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Bowl de frutas con leche de almendras y semillas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de fideos de arroz con caldo casero y huevo duro.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.nutriplatonestle.es/modules/custom/esnestlenutriplatocm/src/assets/esnestlenutriplato/_img/nutrinanny/cena-nino-celiaco-02.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "1 taza de papaya picada.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Ensalada de garbanzos con atún, pepino y cebolla.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo en hojas de lechuga.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 naranja entera.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 tortilla de maíz pequeña de 30g con pollo desmechado y tomate.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Panqueque de clara de huevo con banano y canela.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Lactosa": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://media.hellofresh.com/w_3840,q_auto,f_auto,c_fill,fl_lossy/hellofresh_s3/image/HF_Y25_R19_W01_ES_ESCVV30382-2_Main_7_R_high-0f6a004f.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "200g de pollo al horno con 1 taza de quinoa y espárragos salteados.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "2 tortillas de maíz con pollo desmechado, aguacate y queso de soja.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Arroz caldoso con mariscos, usando una base de sofrito en aceite.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Pasta de garbanzo con pesto casero (albahaca, muchas nueces y aceite de oliva).", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Seco de pollo, 1 taza de arroz integral y ensalada de rábano.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://ybarraentucocina.com/wp-content/uploads/2020/10/recetas-ybarra-pastel-primavera-mayonesa-495x400.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "1 manzana y un puñado pequeño de almendras.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "1 presa de pollo, !/2 taza de arroz integral y ensalada de rábano.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Panqueques de avena con bananas encima.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Lomo de cerdo con puré de papa y ensalada verde.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Tortilla de champiñones con espárragos.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Ensalada de garbanzos con 1 lata de atún, aceitunas y tomate.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Avena con leche de soja, 1 cda. de cacao en polvo y unos pocos arándanos.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+     n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.miplato.es/tienda/1479-home_default/alubias-con-almejas.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "Bowl de papaya, piña y mango.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Sopa de fideos de arroz con caldo de pollo concentrado y 2 huevos duros.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo con pimientos, cebolla y extra de aguacate en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "Lentejas estofadas con papas, zanahoria y trozo de jamón.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza hecha con leche de coco y 1 pechuga de pollo picada encima.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "Revuelto de 3 huevos con espinacas y 2 tostadas de pan integral con aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "1 taza de yogur de coco.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Mariscos y Pescado": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://i.ytimg.com/vi/r1dqRGD0gEA/maxresdefault.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "Pollo a la plancha con arroz integral y ensalada de tomate y pepino.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "1 taza de yogur natural sin azúcar.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Batido de leche de almendras, fresas, chía, avena certificada y 2 cucharadas de mantequilla de maní.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Pollo guisado con arroz.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Pan integral con aguacate.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.laylita.com/recetas/wp-content/uploads/Pastas-con-salsa-cremosa-de-aguacate.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "Carne con arroz integral y puré.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Pollo con brócoli y zanahoria al vapor.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Batido de frutas con yogur natural.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Carne con 1 taza de quinoa y ensalada.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Fajitas de pollo en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Bowl de frutas con leche de almendras y semillas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de fideos de arroz con caldo casero y huevo duro.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.cocinavital.mx/wp-content/uploads/2017/03/tinga_de_nopal.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "1 taza de papaya picada.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Ensalada de garbanzos con atún pepino y cebolla.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo en hojas de lechuga.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 naranja entera.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 tortilla de maíz pequeña de 30g con pollo desmechado y tomate.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Panqueque de clara de huevo con banano y canela.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Maní": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://content-cocina.lecturas.com/medio/2018/07/19/paso-a-paso-para-hacer-bunuelitos-de-turron-con-salsa-de-cafe-resultado-final_8778b9c1_600x600.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "2 tostadas de pan sin gluten, 1 aguacate, 2 huevos fritos y sésamo.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Yogur de coco con nueces y manzana.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Batido de leche de almendras, fresas, chía, avena certificada y 2 cucharadas de mantequilla de maní.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Seco de pollo, arroz integral y ensalada con aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Tortilla de champiñones con 3 huevos y espárragos con pan sin gluten.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://i.blogs.es/7004a4/tarta-h/840_560.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "150g de salmón al horno con quinoa y espárragos.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Ensalada de garbanzos con atún y aceitunas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Lentejas estofadas con verduras y aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Avena certificada sin gluten con leche soja y cacao.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Fajitas de pollo en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Bowl de frutas con leche de almendras y semillas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de fideos de arroz con caldo casero y huevo duro.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://redsevillasingluten.org/wp-content/uploads/2022/07/ensalada-verano-vegetales-temporada-sin-gluten-rssg.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "2 tostadas de pan sin gluten, 1 aguacate, 2 huevos fritos y sésamo.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Yogur de coco con nueces y manzana.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Batido de leche de almendras, fresas, chía, avena certificada y 2 cucharadas de mantequilla de maní.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Seco de pollo, arroz integral y ensalada con aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Tortilla de champiñones con 3 huevos y espárragos con pan sin gluten.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://snuks.com.ar/wp-content/uploads/2021/11/xSNK11_BLOG_Portada_15Almuerzos_RX.jpg.pagespeed.ic.d16njJPjmn.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "150g de salmón al horno con quinoa y espárragos.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Ensalada de garbanzos con atún y aceitunas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Lentejas estofadas con verduras y aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Avena certificada sin gluten con leche soja y cacao.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Fajitas de pollo en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Bowl de frutas con leche de almendras y semillas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de fideos de arroz con caldo casero y huevo duro.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.nutriplatonestle.es/modules/custom/esnestlenutriplatocm/src/assets/esnestlenutriplato/_img/nutrinanny/cena-nino-celiaco-02.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "1 taza de papaya picada.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Ensalada de garbanzos con atún, pepino y cebolla.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo en hojas de lechuga.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 naranja entera.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 tortilla de maíz pequeña de 30g con pollo desmechado y tomate.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Panqueque de clara de huevo con banano y canela.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Lactosa": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://media.hellofresh.com/w_3840,q_auto,f_auto,c_fill,fl_lossy/hellofresh_s3/image/HF_Y25_R19_W01_ES_ESCVV30382-2_Main_7_R_high-0f6a004f.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "200g de pollo al horno con 1 taza de quinoa y espárragos salteados.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "2 tortillas de maíz con pollo desmechado, aguacate y queso de soja.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Arroz caldoso con mariscos, usando una base de sofrito en aceite.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Pasta de garbanzo con pesto casero (albahaca, muchas nueces y aceite de oliva).", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Seco de pollo, 1 taza de arroz integral y ensalada de rábano.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://ybarraentucocina.com/wp-content/uploads/2020/10/recetas-ybarra-pastel-primavera-mayonesa-495x400.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "1 manzana y un puñado pequeño de almendras.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "1 presa de pollo, !/2 taza de arroz integral y ensalada de rábano.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Panqueques de avena con bananas encima.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Lomo de cerdo con puré de papa y ensalada verde.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Tortilla de champiñones con espárragos.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Ensalada de garbanzos con 1 lata de atún, aceitunas y tomate.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Avena con leche de soja, 1 cda. de cacao en polvo y unos pocos arándanos.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+     n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.miplato.es/tienda/1479-home_default/alubias-con-almejas.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "Bowl de papaya, piña y mango.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Sopa de fideos de arroz con caldo de pollo concentrado y 2 huevos duros.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo con pimientos, cebolla y extra de aguacate en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "Lentejas estofadas con papas, zanahoria y trozo de jamón.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza hecha con leche de coco y 1 pechuga de pollo picada encima.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "Revuelto de 3 huevos con espinacas y 2 tostadas de pan integral con aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "1 taza de yogur de coco.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Mariscos y Pescado": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://i.ytimg.com/vi/r1dqRGD0gEA/maxresdefault.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "Pollo a la plancha con arroz integral y ensalada de tomate y pepino.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "1 taza de yogur natural sin azúcar.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Batido de leche de almendras, fresas, chía, avena certificada y 2 cucharadas de mantequilla de maní.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Pollo guisado con arroz.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Pan integral con aguacate.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.laylita.com/recetas/wp-content/uploads/Pastas-con-salsa-cremosa-de-aguacate.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "Carne con arroz integral y puré.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Pollo con brócoli y zanahoria al vapor.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Batido de frutas con yogur natural.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Carne con 1 taza de quinoa y ensalada.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Fajitas de pollo en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Bowl de frutas con leche de almendras y semillas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de fideos de arroz con caldo casero y huevo duro.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.cocinavital.mx/wp-content/uploads/2017/03/tinga_de_nopal.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "1 taza de papaya picada.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Ensalada de garbanzos con atún pepino y cebolla.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo en hojas de lechuga.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 naranja entera.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 tortilla de maíz pequeña de 30g con pollo desmechado y tomate.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Panqueque de clara de huevo con banano y canela.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Maní": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://content-cocina.lecturas.com/medio/2018/07/19/paso-a-paso-para-hacer-bunuelitos-de-turron-con-salsa-de-cafe-resultado-final_8778b9c1_600x600.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "2 tostadas de pan sin gluten, 1 aguacate, 2 huevos fritos y sésamo.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Yogur de coco con nueces y manzana.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Batido de leche de almendras, fresas, chía, avena certificada y 2 cucharadas de mantequilla de maní.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Seco de pollo, arroz integral y ensalada con aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Tortilla de champiñones con 3 huevos y espárragos con pan sin gluten.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://i.blogs.es/7004a4/tarta-h/840_560.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "150g de salmón al horno con quinoa y espárragos.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Ensalada de garbanzos con atún y aceitunas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Lentejas estofadas con verduras y aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Avena certificada sin gluten con leche soja y cacao.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Fajitas de pollo en tortillas de maíz.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Bowl de frutas con leche de almendras y semillas.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de fideos de arroz con caldo casero y huevo duro.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://content.cuerpomente.com/medio/2023/09/29/ensalada-de-tallarines-de-trigo-sarraceno-y-garbanzos-con-salsa-de-miso_c1fc0d37_230929084156_2000x1350.jpg",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "1 taza de papaya picada.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Ensalada de garbanzos con atún pepino y cebolla.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Fajitas de pollo en hojas de lechuga.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 naranja entera.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabaza.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "1 tortilla de maíz pequeña de 30g con pollo desmechado y tomate.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Panqueque de clara de huevo con banano y canela.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ],
+
+  "Sin Huevos": [
+    {
+      n: "Plan semanal para aumento de masa",
+      p: 45,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://cdn7.kiwilimon.com/ss_secreto/2460/2460.jpg",
+      t: "BAJO PESO",
+      ing: [
+        { nombre: "Panqueques de avena y banano (sin huevo).", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Bowl de yogur griego con granola y mango.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Arroz cremoso con pollo y queso.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" },
+        { nombre: "Papas asadas con carne desmechada.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png"  },
+        { nombre: "Pasta con salsa blanca y champiñones.", img: "https://cdn-icons-png.flaticon.com/512/1813/1813442.png" }
+      ]
+    },
+    {
+      n: "Plan semanal para mantenimiento",
+      p: 55,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://i.blogs.es/4ec708/espaguetis/650_1200.jpg",
+      t: "NORMAL",
+      ing: [
+        { nombre: "Fajitas de pollo con pimientos tricolor.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Pasta integral con verduras salteadas y aceite de oliva.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Sopa de lentejas con vegetales.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"  },
+        { nombre: "Pasta integral con tomate.", img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png" },
+        { nombre: "Bowl de frutas con yogur natural.",  img: "https://cdn-icons-png.flaticon.com/512/14777/14777355.png"}
+      ]
+    },
+    {
+      n: "Plan semanal - déficit calórico",
+      p: 35,
+      d: "Da clic en elegir para desbloquear algunos de los platos de la semana.",
+      img: "https://www.sandiegouniontribune.com/wp-content/uploads/migration/2017/05/17/00000169-69d0-da6f-abeb-7ffbf9c90000.jpg?w=620",
+      t: "SOBREPESO",
+      ing: [
+        { nombre: "Wraps de lechuga con pollo y vegetales.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Crema de calabazín con semillas de girasol.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Filete de pescado al vapor con verduras.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"  },
+        { nombre: "Ensalada verde con pollo y limón.", img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png" },
+        { nombre: "Sopa de verduras casera.",  img: "https://cdn-icons-png.flaticon.com/256/10164/10164478.png"}
+      ]
+    }
+  ]
+};
+
+function mostrarDietas(tipo) {
+  const container = document.getElementById("dieta-final");
+  container.innerHTML = "";
+  container.classList.remove("hidden");
+
+  const planes = dietasDB[tipo];
+  if (!planes) return;
+
+  planes.forEach((p, index) => {
+    let ingredientesHTML = "";
+
+    p.ing.forEach(i => {
+      ingredientesHTML += `
+        <div class="flex items-center gap-3 mb-2">
+          <img src="${i.img}" class="w-10 h-10 rounded-full object-cover">
+          <span>${i.nombre}</span>
+        </div>
+      `;
+    });
+
+    container.innerHTML += `
+      <div class="glass-panel p-6 rounded-xl">
+        
+        <div class="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-2">
+          ${p.t}
+        </div>
+
+        <img src="${p.img}" class="w-full h-40 object-cover rounded-lg mb-3">
+
+        <h4 class="font-bold text-lg">${p.n}</h4>
+        <p class="text-sm text-gray-600 mb-3">${p.d}</p>
+
+        <div class="flex justify-between items-center mb-3">
+          <button onclick="toggleIngredientes('${tipo}-${index}')"
+            class="bg-emerald-900 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-emerald-500 transition shadow-lg">
+            Elegir
+          </button>
+        </div>
+
+        <div id="ing-${tipo}-${index}" class="hidden mt-4 bg-emerald-50 p-4 rounded-xl">
+          <b>Algunas opciones:</b>
+          ${ingredientesHTML}
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+function toggleIngredientes(id) {
+  const div = document.getElementById("ing-" + id);
+  div.classList.toggle("hidden");
+}
+
+        function selectAlergia(tipo) {
+            const container = document.getElementById('dieta-final');
+            container.classList.remove('hidden');
+            container.innerHTML = "";
+            
+            const planes = dietasDB[tipo] || dietasDB["Gluten"]; // Fallback
+            
+            planes.forEach(p => {
+                container.innerHTML += `
+                    <div class="glass-panel p-6 rounded-[35px] relative overflow-hidden group">
+                        <div class="absolute top-4 right-4 bg-emerald-500 text-white px-4 py-1 rounded-full text-xs font-black z-20 shadow-lg">SOBREPESO</div>
+                        <div class="h-48 overflow-hidden rounded-2xl mb-6">
+                            <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        </div>
+                        <h4 class="text-2xl font-black text-emerald-900 mb-2">${p.n}</h4>
+                        <p class="text-emerald-700/70 text-sm mb-6 font-medium">${p.d}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-black text-emerald-600">$${p.p}</span>
+                            <button class="bg-emerald-900 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-emerald-500 transition shadow-lg">ELEGIR</button>
+                        </div>
+                    </div>`;
+            });
+
+document.getElementById('payment-form')?.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  if (shoppingCart.length === 0) {
+    showToast("⚠️ Tu carrito está vacío");
+    return;
+  }
+
+  const name = document.getElementById('card-name').value.trim();
+  const number = document.getElementById('card-number').value.trim();
+  const expiry = document.getElementById('card-expiry').value.trim();
+  const cvv = document.getElementById('card-cvv').value.trim();
+
+  if (!name || !number || !expiry || !cvv) {
+    showToast("⚠️ Completa todos los datos de la tarjeta");
+    return;
+  }
+
+  showToast("✅ Pago realizado con éxito");
+  shoppingCart = [];
+  updateCartBadge();
+  renderCart();
+  showSection('calendario');
+});
+
+        }
+        // ===== AUTH MODAL =====
+        function openAuthModal(type) {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            if (type === 'login') {
+                switchToLogin();
+            } else {
+                switchToRegister();
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchToLogin() {
+            document.getElementById('login-form-container').classList.remove('hidden');
+            document.getElementById('register-form-container').classList.add('hidden');
+        }
+
+        function switchToRegister() {
+            document.getElementById('login-form-container').classList.add('hidden');
+            document.getElementById('register-form-container').classList.remove('hidden');
+        }
+
+        // ===== FORMS =====
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Simulate login
+            currentUser = {
+                name: email.split('@')[0],
+                email: email
+            };
+            isLoggedIn = true;
+
+            updateNavigation();
+            closeAuthModal();
+            showToast('¡Bienvenido a SafeBite Plus! 🎉');
+            showSection('planes');
+        });
+
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+
+            // Simulate registration
+            currentUser = {
+                name: name,
+                email: email
+            };
+            isLoggedIn = true;
+
+            updateNavigation();
+            closeAuthModal();
+            showToast('¡Cuenta creada exitosamente! 🎉');
+            showSection('planes');
+        });
+
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('¡Mensaje enviado! Te contactaremos pronto 📬');
+            this.reset();
+        });
+
+        // ===== TOAST =====
+        function showToast(message) {
+            const toast = document.getElementById('success-toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // ===== ELEMENT SDK =====
+        async function onConfigChange(newConfig) {
+            document.getElementById('brand-name').textContent = newConfig.brand_name || defaultConfig.brand_name;
+            document.getElementById('slogan').textContent = newConfig.slogan_text || defaultConfig.slogan_text;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ['brand_name', config.brand_name || defaultConfig.brand_name],
+                ['slogan_text', config.slogan_text || defaultConfig.slogan_text]
+            ]);
+        }
+
+        // Initialize
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+            config = window.elementSdk.config || defaultConfig;
+        }
+        
+        onConfigChange(config);
+        updateNavigation();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c3579a4b471824c',t:'MTc2OTMyMDAzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
